@@ -1,15 +1,14 @@
 {
-  "author": "AngularUI Team",
-  "name": "angular-ui",
-  "description": "AngularUI - Companion Suite for AngularJS",
+  "author": "AngularUI",
+  "name": "angular-select2",
   "version": "0.4.0",
   "homepage": "http://angular-ui.github.com",
-  "keywords": ['angular', 'angularui', 'select2'],
+  "keywords": [ "angular", "angularui", "select2" ],
   "repository": {
     "type": "git",
     "url": "git://github.com/angular-ui/angular-ui.git"
   },
-  "main": "./build/angular-ui.min.js",
+  "main": "./select2.js",
   "dependencies": {
     "jquery": ">= 1.8.0",
     "angular": ">= 1.0.2",

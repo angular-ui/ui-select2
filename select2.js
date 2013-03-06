@@ -5,7 +5,7 @@
  *     This change is so that you do not have to do an additional query yourself on top of Select2's own query
  * @params [options] {object} The configuration options passed to $.fn.select2(). Refer to the documentation
  */
-angular.module('ui.directives').directive('uiSelect2', ['ui.config', '$timeout', function (uiConfig, $timeout) {
+angular.module('ui.select2', []).directive('uiSelect2', ['ui.config', '$timeout', function (uiConfig, $timeout) {
   var options = {};
   if (uiConfig.select2) {
     angular.extend(options, uiConfig.select2);
