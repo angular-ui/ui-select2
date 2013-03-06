@@ -1,5 +1,5 @@
 // a helper directive for injecting formatters and parsers
-angular.module('ui.directives').directive('injectTransformers', [ function () {
+angular.module('ui.select2').directive('injectTransformers', [ function () {
   return {
     restrict: 'A',
     require: 'ngModel',
@@ -22,7 +22,7 @@ describe('uiSelect2', function () {
   'use strict';
 
   var scope, $compile, options, $timeout;
-  beforeEach(module('ui.directives'));
+  beforeEach(module('ui.select2'));
   beforeEach(inject(function (_$rootScope_, _$compile_, _$window_, _$timeout_) {
     scope = _$rootScope_.$new();
     $compile = _$compile_;

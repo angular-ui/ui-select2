@@ -1,6 +1,0 @@
-[submodule "libs/select2"]
-	path = libs/select2
-	url = git://github.com/ivaynberg/select2.git
-[submodule "libs/angular.js"]
-	path = libs/angular.js
-	url = git://github.com/angular/bower-angular.git
