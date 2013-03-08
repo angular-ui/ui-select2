@@ -1,4 +1,5 @@
 basePath = '..';
+
 files = [
   JASMINE,
   JASMINE_ADAPTER,
@@ -9,4 +10,5 @@ files = [
   'src/*.js',
   'test/*Spec.js'
 ];
+
 singleRun = true;
