@@ -2,11 +2,9 @@ basePath = '..';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'components/jquery/jquery.js',
-  'components/angular/angular.js',
-  'components/angular-mocks/angular-mocks.js',
-  'components/select2/select2.js',
+  'test/lib/angular.js',
+  'test/lib/*.js',
   'src/*.js',
   'test/*Spec.js'
 ];
-singleRun = true;
+singleRun = false;
