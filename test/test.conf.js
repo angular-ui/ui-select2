@@ -7,6 +7,6 @@ files = [
   'components/angular-mocks/angular-mocks.js',
   'components/select2/select2.js',
   'src/*.js',
-  'tests/*.js'
+  'test/*Spec.js'
 ];
-runOnce = true;
+singleRun = true;
