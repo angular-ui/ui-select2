@@ -100,7 +100,7 @@ describe('uiSelect2', function () {
     describe('compiling this directive', function () {
       it('should throw an error if we have no model defined', function () {
         expect(function(){
-          compile('<select type="text" ui-reset></select>');
+          compile('<select type="text" ui-select2></select>');
         }).toThrow();
       });
       it('should create proper DOM structure', function () {
