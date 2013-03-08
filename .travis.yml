@@ -9,4 +9,4 @@
   - npm install -g bower
   - bower install
 
- script: "testacular run"
+ script: "testacular run --browsers=Firefox,PhantomJS"
