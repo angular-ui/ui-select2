@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git://github.com/angular-ui/angular-ui.git"
   },
-  "main": "./select2.js",
+  "main": "./src/ui-select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
     "select2": ">= 3.x.x"
