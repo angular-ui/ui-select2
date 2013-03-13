@@ -3,7 +3,11 @@
   "name": "angular-select2",
   "version": "0.4.0",
   "homepage": "http://angular-ui.github.com",
-  "keywords": [ "angular", "angularui", "select2" ],
+  "keywords": [
+    "angular",
+    "angularui",
+    "select2"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/angular-ui/angular-ui.git"
@@ -11,9 +15,12 @@
   "main": "./src/ui-select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
-    "select2": ">= 3.x.x"
+    "select2": "~3.3.1",
+    "angular-module": "latest",
+    "angular-mocks": "~1.0.5"
   },
   "devDependencies": {
+    "angular-module": "latest",
     "angular-mocks": ">= 1.0.2"
   }
 }
