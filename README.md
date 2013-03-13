@@ -1,4 +1,4 @@
-ui-select2
+ui-select2  ![Build Status](https://travis-ci.org/angular-ui/ui-select2.png)
 ==========
 
 ## Setup
