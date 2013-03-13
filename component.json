@@ -10,9 +10,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/angular-ui/angular-ui.git"
+    "url": "git://github.com/angular-ui/ui-select2.git"
   },
-  "main": "./src/ui-select2.js",
+  "main": "./ui-select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
     "select2": "~3.3.1",
