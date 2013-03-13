@@ -1,17 +1,13 @@
 {
   "author": "AngularUI",
-  "name": "angular-select2",
-  "version": "0.4.0",
+  "name": "angular-ui-select2",
+  "version": "0.0.1",
   "homepage": "http://angular-ui.github.com",
   "keywords": [
     "angular",
     "angularui",
     "select2"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/angular-ui/ui-select2.git"
-  },
   "main": "./ui-select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
