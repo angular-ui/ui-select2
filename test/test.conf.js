@@ -6,7 +6,7 @@ files = [
   'components/jquery/jquery.js',
   'components/angular/angular.js',
   'components/*/*.js',
-  'src/*.js',
+  '*.js',
   'test/*Spec.js'
 ];
 
