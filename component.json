@@ -11,12 +11,9 @@
   "main": "./ui-select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
-    "select2": "~3.3.1",
-    "angular-module": "latest",
-    "angular-mocks": "~1.0.5"
+    "select2": "~3.3.1"
   },
   "devDependencies": {
-    "angular-module": "latest",
     "angular-mocks": ">= 1.0.2"
   }
 }
