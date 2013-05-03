@@ -41,6 +41,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           opts.multiple = true;
         }
 
+        if (!opts.uiDataBinder) {
+          // Provide default method to just return data object.
+          opts.uiDataBinder = function(data) {
+             return data;
+          };
+        }
+
         if (controller) {
           // Watch the model for programmatic changes
           controller.$render = function () {
@@ -85,7 +92,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.bind("change", function () {
               if (scope.$$phase) return;
               scope.$apply(function () {
-                controller.$setViewValue(elm.select2('data'));
+                controller.$setViewValue(opts.uiDataBinder(elm.select2('data')));
               });
             });
 
@@ -125,7 +132,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
           if (!opts.initSelection && !isSelect)
-            controller.$setViewValue(elm.select2('data'));
+            controller.$setViewValue(opts.uiDataBinder(elm.select2('data')));
         });
       };
     }
