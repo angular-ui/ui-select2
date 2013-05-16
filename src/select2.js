@@ -85,7 +85,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.bind("change", function () {
               if (scope.$$phase) return;
               scope.$apply(function () {
-                controller.$setViewValue(elm.select2('data'));
+                angular.extend(controller.$viewValue, elm.select2('data'))
               });
             });
 
