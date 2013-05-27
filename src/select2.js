@@ -5,13 +5,13 @@
  *     This change is so that you do not have to do an additional query yourself on top of Select2's own query
  * @params [options] {object} The configuration options passed to $.fn.select2(). Refer to the documentation
  */
-angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', function (uiSelect2Config, $timeout) {
+angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', '$parse', function (uiSelect2Config, $timeout, $parse) {
   var options = {};
   if (uiSelect2Config) {
     angular.extend(options, uiSelect2Config);
   }
   return {
-    require: '?ngModel',
+    require: 'ngModel',
     compile: function (tElm, tAttrs) {
       var watch,
         repeatOption,
@@ -41,77 +41,93 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           opts.multiple = true;
         }
 
-        if (controller) {
-          // Watch the model for programmatic changes
-          controller.$render = function () {
-            if (isSelect) {
-              elm.select2('val', controller.$viewValue);
-            } else {
-              if (isMultiple) {
-                if (!controller.$viewValue) {
-                  elm.select2('data', []);
-                } else if (angular.isArray(controller.$viewValue)) {
-                  elm.select2('data', controller.$viewValue);
-                } else {
-                  elm.select2('val', controller.$viewValue);
-                }
+        // Watch the model for programmatic changes
+        controller.$render = function () {
+          if (isSelect) {
+            elm.select2('val', controller.$viewValue);
+          } else {
+            if (isMultiple) {
+              if (!controller.$viewValue) {
+                elm.select2('data', []);
+              } else if (angular.isArray(controller.$viewValue)) {
+                elm.select2('data', controller.$viewValue);
               } else {
-                if (angular.isObject(controller.$viewValue)) {
-                  elm.select2('data', controller.$viewValue);
-                } else if (!controller.$viewValue) {
-                  elm.select2('data', null);
-                } else {
-                  elm.select2('val', controller.$viewValue);
-                }
+                elm.select2('val', controller.$viewValue);
+              }
+            } else {
+              if (angular.isObject(controller.$viewValue)) {
+                elm.select2('data', controller.$viewValue);
+              } else if (!controller.$viewValue) {
+                elm.select2('data', null);
+              } else {
+                elm.select2('val', controller.$viewValue);
               }
             }
-          };
-
-          // Watch the options dataset for changes
-          if (watch) {
-            scope.$watch(watch, function (newVal, oldVal, scope) {
-              if (!newVal) return;
-              // Delayed so that the options have time to be rendered
-              $timeout(function () {
-                elm.select2('val', controller.$viewValue);
-                // Refresh angular to remove the superfluous option
-                elm.trigger('change');
-              });
-            });
           }
+        };
 
-          // Update valid and dirty statuses
-          controller.$parsers.push(function (value) {
-            var div = elm.prev()
-            div
-              .toggleClass('ng-invalid', !controller.$valid)
-              .toggleClass('ng-valid', controller.$valid)
-              .toggleClass('ng-invalid-required', !controller.$valid)
-              .toggleClass('ng-valid-required', controller.$valid)
-              .toggleClass('ng-dirty', controller.$dirty)
-              .toggleClass('ng-pristine', controller.$pristine);
-            return value;
+        // Watch the options dataset for changes
+        if (watch) {
+          scope.$watch(watch, function (newVal, oldVal, scope) {
+            if (!newVal) return;
+            // Delayed so that the options have time to be rendered
+            $timeout(function () {
+              elm.select2('val', controller.$viewValue);
+              // Refresh angular to remove the superfluous option
+              elm.trigger('change');
+            });
+          });
+        }
+
+        // Update valid and dirty statuses
+        controller.$parsers.push(function (value) {
+          var div = elm.prev()
+          div
+            .toggleClass('ng-invalid', !controller.$valid)
+            .toggleClass('ng-valid', controller.$valid)
+            .toggleClass('ng-invalid-required', !controller.$valid)
+            .toggleClass('ng-valid-required', controller.$valid)
+            .toggleClass('ng-dirty', controller.$dirty)
+            .toggleClass('ng-pristine', controller.$pristine);
+          return value;
+        });
+
+        if (!isSelect) {
+          // Set the view and model value and update the angular template manually for the ajax/multiple select2.
+          elm.bind("change", function () {
+            if (scope.$$phase) return;
+            scope.$apply(function () {
+              controller.$setViewValue(elm.select2('data'));
+            });
           });
 
-          if (!isSelect) {
-            // Set the view and model value and update the angular template manually for the ajax/multiple select2.
-            elm.bind("change", function () {
-              if (scope.$$phase) return;
-              scope.$apply(function () {
-                controller.$setViewValue(elm.select2('data'));
+          if (opts.initSelection) {
+            var initSelection = opts.initSelection;
+            opts.initSelection = function (element, callback) {
+              initSelection(element, function (value) {
+                controller.$setViewValue(value);
+                callback(value);
               });
-            });
-
-            if (opts.initSelection) {
-              var initSelection = opts.initSelection;
-              opts.initSelection = function (element, callback) {
-                initSelection(element, function (value) {
-                  controller.$setViewValue(value);
-                  callback(value);
-                });
-              };
-            }
+            };
           }
+        }
+
+        if (attrs.open) {
+          var open = $parse(attrs.open);
+          elm.bind('open', function(){
+            open.assign(scope, true);
+            if (!$scope.$$phase) $scope.$apply();
+          });
+          elm.bind('close', function(){
+            open.assign(scope, false);
+            if (!$scope.$$phase) $scope.$apply();
+          });
+          scope.$watch(attrs.open, function(newVal, oldVal){
+            if (newVal === oldVal)
+              return;
+            var action = newVal ? 'open' : 'close';
+            elm.select2(action);
+          });
         }
 
         attrs.$observe('disabled', function (value) {
