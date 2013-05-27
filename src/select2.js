@@ -120,7 +120,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         }
 
         attrs.$observe('disabled', function (value) {
-          elm.select2(value && 'disable' || 'enable');
+          elm.select2('enable', !value);
+        });
+
+        attrs.$observe('readonly', function (value) {
+          elm.select2('readonly', !!value);
         });
 
         if (attrs.ngMultiple) {

@@ -1,7 +1,7 @@
 {
   "author": "AngularUI",
   "name": "angular-ui-select2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "http://angular-ui.github.com",
   "keywords": [
     "angular",
@@ -11,7 +11,7 @@
   "main": "./src/select2.js",
   "dependencies": {
     "angular": ">= 1.0.2",
-    "select2": "~3.3.1",
+    "select2": "~3.4",
     "jquery": ">=1.6.4"
   },
   "devDependencies": {
