@@ -83,18 +83,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
             var div = elm.prev()
-            if (controller.$valid) {
-              div.removeClass("ng-invalid").addClass("ng-valid");
-              div.removeClass("ng-invalid-required").addClass("ng-valid-required");
-            }
-            if (!controller.$valid) {
-              div.removeClass("ng-valid").addClass("ng-invalid");
-              div.removeClass("ng-valid-required").addClass("ng-invalid-required");
-            }
-            if (controller.$pristine)
-              div.removeClass("ng-dirty").addClass("ng-pristine");
-            if (controller.$dirty)
-              div.removeClass("ng-pristine").addClass("ng-dirty");
+            div
+              .toggleClass('ng-invalid', !controller.$valid)
+              .toggleClass('ng-valid', controller.$valid)
+              .toggleClass('ng-invalid-required', !controller.$valid)
+              .toggleClass('ng-valid-required', controller.$valid)
+              .toggleClass('ng-dirty', controller.$dirty)
+              .toggleClass('ng-pristine', controller.$pristine);
             return value;
           });
 
@@ -132,9 +127,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.select2(opts);
           });
         }
-
-        // Set initial value since Angular doesn't
-        //elm.val(scope.$eval(attrs.ngModel));
 
         // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
         $timeout(function () {
