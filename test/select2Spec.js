@@ -125,19 +125,18 @@ describe('uiSelect2', function () {
           var element = compile('<select ui-select2="{allowClear:true}" ng-model="foo"><option>First</option><option>Second</option></select>');
           expect(element.select2('val')).toBe('First');
           scope.$apply('foo = false');
-          expect(element.select2('val')).toBe(scope.foo);
-          expect(element.select2('val')).toBe(false);
-          scope.$apply('foo = null');
-          expect(element.select2('val')).toBe(scope.foo);
           expect(element.select2('val')).toBe(null);
+          scope.$apply('foo = "Second"');
+          scope.$apply('foo = null');
+          expect(element.select2('val')).toBe(null);
+          scope.$apply('foo = "Second"');
           scope.$apply('foo = undefined');
-          expect(element.select2('val')).toBe(scope.foo);
-          expect(element.select2('val')).toBe(undefined);
+          expect(element.select2('val')).toBe(null);
         });
       });
       describe('for multiple select', function(){
         it('should set select2 to multiple value', function(){
-          scope.foo = 'First';
+          scope.foo = ['First'];
           var element = compile('<select ui-select2="{allowClear:true}" multiple ng-model="foo"><option>First</option><option>Second</option><option>Third</option></select>');
           expect(element.select2('val')).toEqual(['First']);
           scope.$apply('foo = ["Second"]');
@@ -145,19 +144,19 @@ describe('uiSelect2', function () {
           scope.$apply('foo = ["Second","Third"]');
           expect(element.select2('val')).toEqual(['Second','Third']);
         });
-        it('should set select2 to the value for multiples', function(){
-          scope.foo = 'First';
-          var element = compile('<select ui-select2 multiple ng-model="foo"><option>First</option><option>Second</option><option>Third</option></select>');
-          expect(element.select2('val')).toEqual(['First']);
+        it('should handle falsey values', function(){
+          scope.foo = ['First'];
+          var element = compile('<select ui-select2="{allowClear:true}" multiple ng-model="foo"><option>First</option><option>Second</option><option>Third</option></select>');
+          expect(element.val()).toEqual(['First']);
+          scope.$apply('foo = ["Second"]');
           scope.$apply('foo = false');
-          expect(element.select2('val')).toBe(scope.foo);
-          expect(element.select2('val')).toBe(false);
+          expect(element.select2('val')).toEqual([]);
+          scope.$apply('foo = ["Second"]');
           scope.$apply('foo = null');
-          expect(element.select2('val')).toBe(scope.foo);
-          expect(element.select2('val')).toBe(null);
+          expect(element.select2('val')).toEqual([]);
+          scope.$apply('foo = ["Second"]');
           scope.$apply('foo = undefined');
-          expect(element.select2('val')).toBe(scope.foo);
-          expect(element.select2('val')).toBe(undefined);
+          expect(element.select2('val')).toEqual([]);
         });
       });
     });
@@ -182,8 +181,8 @@ describe('uiSelect2', function () {
       scope.items = ['first', 'second', 'third'];
       scope.foo = 'fourth';
       var element = compile('<select ui-select2 ng-model="foo"><option ng-repeat="item in items">{{item}}</option></select>');
-      expect(element.select2('val')).toNotBe('fourth');
-      scope.$apply('items=["fourth"]');
+      expect(element.select2('val')).toBe(null);
+      scope.$apply('foo="fourth";items=["fourth"]');
       $timeout.flush();
       expect(element.select2('val')).toBe('fourth');
     });

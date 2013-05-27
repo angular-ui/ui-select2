@@ -10,8 +10,8 @@ This directive allows you to enhance your select elements with behaviour from th
 
 ## Setup
 
-1. Install **testacular**
-  `$ npm install -g testacular@canary`
+1. Install **karma**
+  `$ npm install -g karma`
 2. Install **bower**
   `$ npm install -g bower`
 4. Install components
@@ -21,7 +21,7 @@ This directive allows you to enhance your select elements with behaviour from th
 
 ## Testing
 
-`$ testacular start test/test.conf.js --browsers=Chrome`
+`$ karma start test/test.conf.js --browsers=Chrome`
 
 # Usage
 

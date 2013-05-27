@@ -11,7 +11,9 @@ files = [
   'test/*Spec.js'
 ];
 
-singleRun = true;
+singleRun = false;
+
+autoWatch = true
 
 reporters = [
 	'dots'
