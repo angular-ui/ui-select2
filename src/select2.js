@@ -29,17 +29,23 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         }
       }
 
+      var parseOpts = function(modelOptions) {
+        var opts = angular.extend({}, options, modelOptions);
+
+          if (isSelect) {
+              // Use <select multiple> instead
+              delete opts.multiple;
+              delete opts.initSelection;
+          } else if (isMultiple) {
+              opts.multiple = true;
+          }
+        return opts;
+      }
+
+
       return function (scope, elm, attrs, controller) {
         // instance-specific options
-        var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
-
-        if (isSelect) {
-          // Use <select multiple> instead
-          delete opts.multiple;
-          delete opts.initSelection;
-        } else if (isMultiple) {
-          opts.multiple = true;
-        }
+        var opts = parseOpts(scope.$eval(attrs.uiSelect2));
 
         if (controller) {
           // Watch the model for programmatic changes
@@ -121,6 +127,21 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         attrs.$observe('readonly', function (value) {
           elm.select2('readonly', !!value);
         });
+        
+        if (attrs.uiSelect2 !== '' && attrs.uiSelect2 !== undefined)
+        {
+          var dataWatch = attrs.uiSelect2 + '.data';
+
+          scope.$watch(dataWatch, function(newValue, oldValue) {
+            if (!newValue) return;
+                              
+            $timeout(function() {
+                opts = parseOpts(scope.$eval(attrs.uiSelect2));
+                elm.select2(opts);
+                elm.trigger('change');
+            });
+          });
+        }
 
         if (attrs.ngMultiple) {
           scope.$watch(attrs.ngMultiple, function(newVal) {
