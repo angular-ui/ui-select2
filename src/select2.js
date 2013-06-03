@@ -13,6 +13,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
   return {
     require: 'ngModel',
     compile: function (tElm, tAttrs) {
+      // Ensure tElm is a jQuery object.
+      if (!(tElm instanceof jQuery)) {
+        tElm = $(tElm);
+      }
+
       var watch,
         repeatOption,
         repeatAttr,
@@ -20,7 +25,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         isMultiple = (tAttrs.multiple !== undefined);
 
       // Enable watching of the options dataset if in use
-      if (tElm.is('select')) {
+      if (isSelect) {
         repeatOption = tElm.find('option[ng-repeat], option[data-ng-repeat]');
 
         if (repeatOption.length) {
@@ -39,6 +44,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           delete opts.initSelection;
         } else if (isMultiple) {
           opts.multiple = true;
+        }
+
+        // Ensure elm is a jQuery object.
+        if (!(elm instanceof jQuery)) {
+          elm = $(elm);
         }
 
         if (controller) {
