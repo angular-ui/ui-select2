@@ -33,7 +33,7 @@ dependencies: {
 }
 ```
 
-To your `components.json` file. Then run
+To your `bower.json` file. Then run
 
     bower install
 
