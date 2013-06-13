@@ -104,7 +104,7 @@ If you add the ng-model directive to same the element as ui-select2 then the pic
 ```html
 <select ui-select2 ng-model="select2" data-placeholder="Pick a number">
     <option value=""></option>
-    <option ng-repeat="{{number in range}}" value="{{number.value}}">{{number.text}}</option>
+    <option ng-repeat="number in range" value="number.value">{{number.text}}</option>
 </select>
 ```
 
