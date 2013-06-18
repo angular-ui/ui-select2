@@ -328,5 +328,19 @@ describe('uiSelect2', function () {
       // TODO: programmactically select an option
       // expect(scope.foo).toBe(/*  selected val  */) ;
     });
+
+    it('updated the view when model changes with complex object', function(){
+      scope.foo = [{'id': '0', 'text': '0'}];
+      scope.options['multiple'] = true
+      var element = compile('<input ng-model="foo" ui-select2="options">');
+      scope.$digest()
+
+      scope.foo.push({'id': '1', 'text': '1'})
+      scope.$digest()
+
+      expect(element.select2('data')).toEqual(
+        [{'id': '0', 'text': '0'}, {'id': '1', 'text': '1'}]);
+    });
+
   });
 });
