@@ -16,6 +16,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       var watch,
         repeatOption,
         repeatAttr,
+        onChangeAttr = tAttrs['onChange'],
         isSelect = tElm.is('select'),
         isMultiple = (tAttrs.multiple !== undefined);
 
@@ -30,6 +31,17 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       }
 
       return function (scope, elm, attrs, controller) {
+        function valueToScope(val) {
+          // assign select2 object to ng-bound variable
+          controller.$setViewValue(val);
+          
+          if (onChangeAttr) {
+            var fn = scope.$eval(onChangeAttr);
+            fn(val);
+          }
+        }
+
+
         // instance-specific options
         var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
 
@@ -107,7 +119,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.bind("change", function () {
               if (scope.$$phase) return;
               scope.$apply(function () {
-                controller.$setViewValue(elm.select2('data'));
+                valueToScope(elm.select2('data'));
               });
             });
 
@@ -115,7 +127,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               var initSelection = opts.initSelection;
               opts.initSelection = function (element, callback) {
                 initSelection(element, function (value) {
-                  controller.$setViewValue(value);
+                  valueToScope(value);
                   callback(value);
                 });
               };
@@ -152,7 +164,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
           if (!opts.initSelection && !isSelect)
-            controller.$setViewValue(elm.select2('data'));
+            valueToScope(elm.select2('data'));
         });
       };
     }
