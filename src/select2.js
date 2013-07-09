@@ -102,6 +102,15 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             return value;
           });
 
+          try {
+            scope.uiSelect2 = angular.fromJson(attrs.uiSelect2);
+          } catch(e) {
+            scope.$watch(attrs.uiSelect2, function (opts) {
+              if (!opts) return;
+              elm.select2(opts);
+            }, true);
+          }
+
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function () {
