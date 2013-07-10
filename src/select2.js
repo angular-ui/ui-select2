@@ -102,15 +102,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             return value;
           });
 
-          try {
-            scope.uiSelect2 = angular.fromJson(attrs.uiSelect2);
-          } catch(e) {
-            scope.$watch(attrs.uiSelect2, function (opts) {
-              if (!opts) return;
-              elm.select2(opts);
-            }, true);
-          }
-
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function () {
@@ -150,19 +141,27 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           });
         }
 
-        // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
-        $timeout(function () {
-          elm.select2(opts);
+        var updateOpts = function (options) {
+          // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
+          $timeout(function () {
+            elm.select2(options);
 
-          // Set initial value - I'm not sure about this but it seems to need to be there
-          elm.val(controller.$viewValue);
-          // important!
-          controller.$render();
+            // Set initial value - I'm not sure about this but it seems to need to be there
+            elm.val(controller.$viewValue);
+            // important!
+            controller.$render();
 
-          // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
-          if (!opts.initSelection && !isSelect)
-            controller.$setViewValue(elm.select2('data'));
-        });
+            // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
+            if (!options.initSelection && !isSelect)
+              controller.$setViewValue(elm.select2('data'));
+          });
+        };
+        updateOpts(opts);
+        scope.$watch(attrs.uiSelect2, function (newOptions, oldOptions) {
+          if (newOptions) {
+            updateOpts(newOptions);
+          }
+        }, true);
       };
     }
   };
