@@ -141,25 +141,21 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           });
         }
 
-        var updateOpts = function (options) {
-          // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
-          $timeout(function () {
-            elm.select2(options);
-
-            // Set initial value - I'm not sure about this but it seems to need to be there
-            elm.val(controller.$viewValue);
-            // important!
-            controller.$render();
-
-            // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
-            if (!options.initSelection && !isSelect)
-              controller.$setViewValue(elm.select2('data'));
-          });
-        };
-        updateOpts(opts);
         scope.$watch(attrs.uiSelect2, function (newOptions, oldOptions) {
           if (newOptions) {
-            updateOpts(newOptions);
+            // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
+            $timeout(function () {
+              elm.select2(newOptions);
+
+              // Set initial value - I'm not sure about this but it seems to need to be there
+              elm.val(controller.$viewValue);
+              // important!
+              controller.$render();
+
+              // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
+              if (!newOptions.initSelection && !isSelect)
+                controller.$setViewValue(elm.select2('data'));
+            });
           }
         }, true);
       };
