@@ -133,3 +133,28 @@ Note: Remember that the ng-required directive must be explicitly set, i.e. to "t
     <option value="three">Third</option>
 </select>
 ```
+
+## Using simple tagging mode
+
+When AngularJS View-Model tags are stored as a list of strings, setting
+the ui-select2 specific option `simple_tags` will allow to keep the model
+as a list of strings, and not convert it into a list of Select2 tag objects.
+
+```html
+<input
+    type="text"
+    ui-select2="select2Options"
+    ng-model="list_of_string"
+    >
+```
+
+```javascript
+myAppModule.controller('MyController', function($scope) {
+    $scope.list_of_string = ['tag1', 'tag2']
+    $scope.select2Options = {
+        'multiple': true,
+        'simple_tags': true,
+        'tags': ['tag1', 'tag2', 'tag3', 'tag4']  // Can be empty list.
+    };
+});
+```

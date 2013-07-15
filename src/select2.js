@@ -33,6 +33,44 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         // instance-specific options
         var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
 
+        /*
+        Convert from Select2 view-model to Angular view-model.
+        */
+        var convertToAngularModel = function(select2_data) {
+          var model;
+          if (opts.simple_tags) {
+            model = []
+            angular.forEach(select2_data, function(value, index) {
+              model.push(value.id)
+            })
+          } else {
+            model = select2_data
+          }
+          return model
+        }
+
+        /*
+        Convert from Angular view-model to Select2 view-model.
+        */
+        var convertToSelect2Model = function(angular_data) {
+          var model = []
+          if (!angular_data) {
+            return model;
+          }
+
+          if (opts.simple_tags) {
+            model = [];
+            angular.forEach(
+              angular_data,
+              function(value, index) {
+                model.push({'id': value, 'text': value});
+              })
+          } else {
+            model = angular_data;
+          }
+          return model
+        }
+
         if (isSelect) {
           // Use <select multiple> instead
           delete opts.multiple;
@@ -56,14 +94,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             if (isSelect) {
               elm.select2('val', controller.$viewValue);
             } else {
-              if (isMultiple) {
-                if (!controller.$viewValue) {
-                  elm.select2('data', []);
-                } else if (angular.isArray(controller.$viewValue)) {
-                  elm.select2('data', controller.$viewValue);
-                } else {
-                  elm.select2('val', controller.$viewValue);
-                }
+              if (opts.multiple) {
+                elm.select2(
+                  'data', convertToSelect2Model(controller.$viewValue));
               } else {
                 if (angular.isObject(controller.$viewValue)) {
                   elm.select2('data', controller.$viewValue);
@@ -107,7 +140,8 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.bind("change", function () {
               if (scope.$$phase) return;
               scope.$apply(function () {
-                controller.$setViewValue(elm.select2('data'));
+                controller.$setViewValue(
+                  convertToAngularModel(elm.select2('data')));
               });
             });
 
@@ -115,14 +149,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               var initSelection = opts.initSelection;
               opts.initSelection = function (element, callback) {
                 initSelection(element, function (value) {
-                  controller.$setViewValue(value);
+                  controller.$setViewValue(convertToAngularModel(value));
                   callback(value);
                 });
               };
             }
           }
         }
-        
+
         elm.bind("$destroy", function() {
           elm.select2("destroy");
         });
@@ -152,7 +186,8 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
           if (!opts.initSelection && !isSelect)
-            controller.$setViewValue(elm.select2('data'));
+            controller.$setViewValue(
+              convertToAngularModel(elm.select2('data')));
         });
       };
     }
