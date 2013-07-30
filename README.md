@@ -46,6 +46,9 @@ This will copy the ui-select2 files into your `components` folder, along with it
 <script type="text/javascript" src="components/angular-ui-select2/src/select2.js"></script>
 ```
 
+(Note that `jquery` must be loaded before `angular` so that it doesn't use `jqLite` internally)
+
+
 Add the select2 module as a dependency to your application module:
 
 ```javascript
