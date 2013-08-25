@@ -175,6 +175,23 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           });
         }
 
+        /*
+         Set view value, set pristine state on select2 element and restore pristine state
+         if it was set before we call controller.$setViewValue
+         */
+        var setInitialViewValue = function (angularModel) {
+          var parentForm = elm.inheritedData('$formController');
+          var wasParentFormPristine = parentForm ? parentForm.$pristine : null;
+
+          controller.$setViewValue(angularModel);
+
+          controller.$setPristine();
+          // restore pristine state
+          if (wasParentFormPristine) {
+            parentForm.$setPristine();
+          }
+        };
+
         // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
         $timeout(function () {
           elm.select2(opts);
@@ -185,9 +202,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           controller.$render();
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
-          if (!opts.initSelection && !isSelect)
-            controller.$setViewValue(
-              convertToAngularModel(elm.select2('data')));
+          if (!opts.initSelection && !isSelect) {
+            setInitialViewValue(convertToAngularModel(elm.select2('data')));
+          }
         });
       };
     }

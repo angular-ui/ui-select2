@@ -405,7 +405,16 @@ describe('uiSelect2', function () {
         expect(scope.foo).toEqual(['tag1', 'tag2']);
       });
 
-    });
+      it('should return pristine state to true', function () {
+        scope.foo = ['tag1', 'tag2'];
 
+        compile('<form name="testForm"><input name="testElement" ng-model="foo" ui-select2="options"></form>');
+        scope.$digest();
+
+        expect(scope.testForm.$pristine).toBeTruthy();
+        expect(scope.testForm.testElement.$pristine).toBeTruthy();
+      });
+
+    });
   });
 });
