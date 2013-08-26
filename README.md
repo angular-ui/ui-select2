@@ -25,7 +25,7 @@ This directive allows you to enhance your select elements with behaviour from th
 
 # Usage
 
-We use [bower](http://twitter.github.com/bower/) for dependency management.  Add
+We use [bower](https://github.com/bower/bower) for dependency management.  Add
 
 ```javascript
 dependencies: {
