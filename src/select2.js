@@ -60,7 +60,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           if (opts.simple_tags) {
             model = [];
-            angular_data = typeof angular_data == "string" && angular_data.indexOf(",") > -1 ? angular_data.split(",") : [angular_data]
+            if(typeof angular_data == "string") {
+              angular_data = angular_data.indexOf(",") > -1 ? angular_data.split(",") : [angular_data];
+            }  
             angular.forEach(
               angular_data,
               function(value, index) {
