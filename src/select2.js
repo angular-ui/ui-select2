@@ -71,6 +71,17 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           return model
         }
 
+        var updateStatuses = function() {
+          var div = elm.prev()
+          div
+            .toggleClass('ng-invalid', !controller.$valid)
+            .toggleClass('ng-valid', controller.$valid)
+            .toggleClass('ng-invalid-required', !controller.$valid)
+            .toggleClass('ng-valid-required', controller.$valid)
+            .toggleClass('ng-dirty', controller.$dirty)
+            .toggleClass('ng-pristine', controller.$pristine);
+        }
+
         if (isSelect) {
           // Use <select multiple> instead
           delete opts.multiple;
@@ -80,6 +91,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         }
 
         if (controller) {
+          scope.$watch(tAttrs.ngRequired, function(current, old) {
+            if (current == old) {
+              return
+            }
+            updateStatuses();
+          })
+
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {
             if (!current) {
@@ -124,14 +142,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
-            var div = elm.prev()
-            div
-              .toggleClass('ng-invalid', !controller.$valid)
-              .toggleClass('ng-valid', controller.$valid)
-              .toggleClass('ng-invalid-required', !controller.$valid)
-              .toggleClass('ng-valid-required', controller.$valid)
-              .toggleClass('ng-dirty', controller.$dirty)
-              .toggleClass('ng-pristine', controller.$pristine);
+            updateStatuses();
             return value;
           });
 
