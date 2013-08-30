@@ -174,9 +174,35 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             elm.select2(opts);
           });
         }
+        
+        if (attrs.ngShow) {
+          scope.$watch(attrs.ngShow, function(newVal) {
+            if ( newVal === true ){
+              $timeout(init);
+            }
+            else if ( newVal === false ){
+              elm.select2('destroy');
+            }
+          });
+        }
+        
+        if (attrs.ngHide) {
+          scope.$watch(attrs.ngHide, function(newVal) {
+            if ( newVal === true ){
+              elm.select2('destroy');
+            }
+            else if ( newVal === false ){
+              $timeout(init);
+            }
+          });
+        }
+        
+        var init = function () {
+          // Check if the select should be hidden
+          if ( ( attrs.ngShow && scope.$eval(attrs.ngShow) === false ) || ( attrs.ngHide && scope.$eval(attrs.ngHide) === true ) ){
+            return false;
+          }
 
-        // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
-        $timeout(function () {
           elm.select2(opts);
 
           // Set initial value - I'm not sure about this but it seems to need to be there
@@ -188,7 +214,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           if (!opts.initSelection && !isSelect)
             controller.$setViewValue(
               convertToAngularModel(elm.select2('data')));
-        });
+        }
+
+        // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
+        $timeout(init);
       };
     }
   };
