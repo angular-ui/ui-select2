@@ -95,7 +95,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             if (isSelect) {
               if (!init) {
                 elm.select2('val', controller.$viewValue);
-                init = true;
+				if (controller.$viewValue) {
+					init = true;
+				}
               }
             } else {
               if (opts.multiple) {
