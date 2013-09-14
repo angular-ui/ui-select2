@@ -1,18 +1,27 @@
-basePath = '..';
+module.exports = function( config ) {
+  config.set({
+    basePath: '..',
 
-files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  'bower_components/jquery/jquery.js',
-  'bower_components/angular/angular.js',
-  'bower_components/angular-mocks/angular-mocks.js',
-  'bower_components/select2/select2.js',
-  'src/select2.js',
-  'test/*Spec.js'
-];
+    browsers: [ 'PhantomJS' ],
 
-singleRun = true;
+    files: [
+      // Dependencies
+      'bower_components/jquery/jquery.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/select2/select2.js',
+      
+      // Source Code
+      'src/select2.js',
 
-reporters = [
-	'dots'
-];
+      // Test Specs
+      'test/*Spec.js'
+    ],
+
+    frameworks: [ 'jasmine' ],
+
+    singleRun: true,
+
+    reporters: [ 'dots' ]
+  });
+};
