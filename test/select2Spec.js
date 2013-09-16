@@ -331,12 +331,12 @@ describe('uiSelect2', function () {
 
     it('updated the view when model changes with complex object', function(){
       scope.foo = [{'id': '0', 'text': '0'}];
-      scope.options['multiple'] = true
+      scope.options['multiple'] = true;
       var element = compile('<input ng-model="foo" ui-select2="options">');
-      scope.$digest()
+      scope.$digest();
 
-      scope.foo.push({'id': '1', 'text': '1'})
-      scope.$digest()
+      scope.foo.push({'id': '1', 'text': '1'});
+      scope.$digest();
 
       expect(element.select2('data')).toEqual(
         [{'id': '0', 'text': '0'}, {'id': '1', 'text': '1'}]);
@@ -346,9 +346,9 @@ describe('uiSelect2', function () {
     describe('simple_tags', function() {
 
       beforeEach(function() {
-        scope.options['multiple'] = true
-        scope.options['simple_tags'] = true
-        scope.options['tags'] = []
+        scope.options['multiple'] = true;
+        scope.options['simple_tags'] = true;
+        scope.options['tags'] = [];
       });
 
       it('Initialize the select2 view based on list of strings.', function() {
@@ -399,7 +399,7 @@ describe('uiSelect2', function () {
         element.select2('data', [
           {'id':'tag1', 'text': 'tag1'},
           {'id':'tag2', 'text': 'tag2'}
-          ])
+        ]);
         element.trigger('change');
 
         expect(scope.foo).toEqual(['tag1', 'tag2']);
