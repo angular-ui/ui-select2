@@ -21,13 +21,13 @@ This directive allows you to enhance your select elements with behaviour from th
 
 ## Testing
 
-We use [Grunt](http://gruntjs.com/) to check for JavaScript syntax errors and execute all unit tests. To run grunt, simply execute:
+We use [Grunt](http://gruntjs.com/) to check for JavaScript syntax errors and execute all unit tests. To run Grunt, simply execute:
 
 `$ grunt`
 
-To have Grunt automatically lint and test your files whenever you make a code change, use:
+This will lint and test the code, then exit. To have Grunt stay open and automatically lint and test your files whenever you make a code change, use:
 
-`$ grunt watch:karma`
+`$ grunt karma:server watch`
 
 This will start a Karma server in the background and run unit tests in Firefox and PhantomJS whenever the source code or spec file is saved.
 

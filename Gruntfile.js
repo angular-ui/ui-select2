@@ -13,11 +13,13 @@ module.exports = function (grunt) {
     bower: 'bower_components',
     pkg: grunt.file.readJSON('package.json'),
     watch: {
-      // Lint & run unit tests in Karma
-      // Just running `$ grunt watch` will only lint your code; to run tests
-      // on watch, use `$ grunt watch:karma` to start a Karma server first
-      files: ['src/select2.js', 'test/select2Spec.js'],
-      tasks: ['jshint', 'karma:headless:run']
+      test: {
+        // Lint & run unit tests in Karma
+        // Just running `$ grunt watch` will only lint your code; to run tests
+        // on watch, use `$ grunt watch:karma` to start a Karma server first
+        files: ['src/select2.js', 'test/select2Spec.js'],
+        tasks: ['jshint', 'karma:unit:run']
+      }
     },
     karma: {
       options: {
@@ -26,10 +28,6 @@ module.exports = function (grunt) {
       unit: {
         singleRun: true,
         browsers: ['Firefox', 'PhantomJS']
-      },
-      headless: {
-        singleRun: true,
-        browsers: ['PhantomJS']
       },
       server: {
         background: true,
@@ -50,7 +48,6 @@ module.exports = function (grunt) {
 
   // Register tasks
   grunt.registerTask('default', ['jshint', 'karma:unit']);
-  grunt.registerTask('watch:karma', ['karma:server', 'watch']);
 
   grunt.initConfig(initConfig);
 };
