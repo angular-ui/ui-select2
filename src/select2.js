@@ -17,7 +17,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         repeatOption,
         repeatAttr,
         isSelect = tElm.is('select'),
-        isMultiple = (tAttrs.multiple !== undefined);
+        isMultiple = angular.isDefined(tAttrs.multiple);
 
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
@@ -39,21 +39,21 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         var convertToAngularModel = function(select2_data) {
           var model;
           if (opts.simple_tags) {
-            model = []
+            model = [];
             angular.forEach(select2_data, function(value, index) {
-              model.push(value.id)
-            })
+              model.push(value.id);
+            });
           } else {
-            model = select2_data
+            model = select2_data;
           }
-          return model
-        }
+          return model;
+        };
 
         /*
         Convert from Angular view-model to Select2 view-model.
         */
         var convertToSelect2Model = function(angular_data) {
-          var model = []
+          var model = [];
           if (!angular_data) {
             return model;
           }
@@ -64,12 +64,12 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               angular_data,
               function(value, index) {
                 model.push({'id': value, 'text': value});
-              })
+              });
           } else {
             model = angular_data;
           }
-          return model
-        }
+          return model;
+        };
 
         if (isSelect) {
           // Use <select multiple> instead
@@ -83,13 +83,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {
             if (!current) {
-              return
+              return;
             }
-            if (current == old) {
-              return
+            if (current === old) {
+              return;
             }
-            controller.$render()
-          }, true)
+            controller.$render();
+          }, true);
           controller.$render = function () {
             if (isSelect) {
               elm.select2('val', controller.$viewValue);
@@ -112,7 +112,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           // Watch the options dataset for changes
           if (watch) {
             scope.$watch(watch, function (newVal, oldVal, scope) {
-              if (!newVal) return;
+              if (!newVal) {
+                return;
+              }
               // Delayed so that the options have time to be rendered
               $timeout(function () {
                 elm.select2('val', controller.$viewValue);
@@ -124,7 +126,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
-            var div = elm.prev()
+            var div = elm.prev();
             div
               .toggleClass('ng-invalid', !controller.$valid)
               .toggleClass('ng-valid', controller.$valid)
@@ -138,7 +140,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function () {
-              if (scope.$$phase) return;
+              if (scope.$$phase) {
+                return;
+              }
               scope.$apply(function () {
                 controller.$setViewValue(
                   convertToAngularModel(elm.select2('data')));
@@ -185,9 +189,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           controller.$render();
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
-          if (!opts.initSelection && !isSelect)
+          if (!opts.initSelection && !isSelect) {
             controller.$setViewValue(
-              convertToAngularModel(elm.select2('data')));
+              convertToAngularModel(elm.select2('data'))
+            );
+          }
         });
       };
     }
