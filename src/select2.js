@@ -15,6 +15,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
     compile: function (tElm, tAttrs) {
       var watch,
         repeatOption,
+        ngOptions,
         repeatAttr,
         isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
@@ -22,10 +23,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
         repeatOption = tElm.find('option[ng-repeat], option[data-ng-repeat]');
+        ngOptions = tAttrs.ngOptions;
 
         if (repeatOption.length) {
           repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
           watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
+        } else if (ngOptions) {
+            var inRegexp = /.*\sin\s(.*)/g;
+            watch = ngOptions.replace(inRegexp,'$1');
         }
       }
 
