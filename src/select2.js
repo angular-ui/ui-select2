@@ -33,6 +33,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         // instance-specific options
         var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
 
+        // Allows a query function to be passed in using an attribute called 'query'
+        if (!isSelect && angular.isDefined(attrs.query)) {
+            opts.query = scope[attrs.query];
+        }
+
         /*
         Convert from Select2 view-model to Angular view-model.
         */
