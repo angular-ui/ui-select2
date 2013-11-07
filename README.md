@@ -163,3 +163,29 @@ myAppModule.controller('MyController', function($scope) {
     };
 });
 ```
+
+### Dynamic tags from a model
+
+It is possible to change the list of tag suggestions dynamically at runtime.
+
+```html
+<input
+    type="text"
+    ui-select2="select2Options"
+    ng-model="list_of_string"
+    >
+```
+
+```javascript
+myAppModule.controller('MyController', function($scope) {
+    var possible_tags = ['tag1', 'tag2', 'tag3', 'tag4'];
+    $scope.list_of_string = ['tag1', 'tag2']
+    $scope.select2Options = {
+        'multiple': true,
+        'simple_tags': true,
+        'tags': function () { return possible_tags; }
+    };
+    
+    // Can modify possible_tags and any new choices will be shown in the view
+});
+```
