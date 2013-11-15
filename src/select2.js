@@ -179,6 +179,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           });
         }
 
+        if (attrs.uiSelect2) {
+          scope.$watch(attrs.uiSelect2, function (newVal, oldVal, scope) {
+            elm.select2(newVal);
+            controller.$render();
+          }, true);
+        }
+
         // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
         $timeout(function () {
           elm.select2(opts);
