@@ -4,7 +4,7 @@ This directive allows you to enhance your select elements with behaviour from th
 
 # Requirements
 
-- [AngularJS](http://angularjs.org/)
+- [AngularJS](http://angularjs.org/) < v1.2
 - [JQuery](http://jquery.com/)
 - [Select2](http://ivaynberg.github.io/select2/)
 
