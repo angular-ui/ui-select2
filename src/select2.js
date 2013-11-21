@@ -21,10 +21,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
-        repeatOption = tElm.find('option[ng-repeat], option[data-ng-repeat]');
+        repeatOption = tElm.find('option[ng-repeat], option[data-ng-repeat], option[ng-options], option[data-ng-options]');
 
         if (repeatOption.length) {
-          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
+          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat') || repeatOption.attr('ng-options') || repeatOption.attr('data-ng-options');
           watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
         }
       }
