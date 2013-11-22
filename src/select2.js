@@ -12,6 +12,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
   }
   return {
     require: 'ngModel',
+    priority: 1,
     compile: function (tElm, tAttrs) {
       var watch,
         repeatOption,
