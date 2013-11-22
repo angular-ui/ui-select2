@@ -112,7 +112,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           // Watch the options dataset for changes
           if (watch) {
             scope.$watch(watch, function (newVal, oldVal, scope) {
-              if (!newVal) {
+              if (angular.equals(newVal, oldVal)) {
                 return;
               }
               // Delayed so that the options have time to be rendered
@@ -120,6 +120,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                 elm.select2('val', controller.$viewValue);
                 // Refresh angular to remove the superfluous option
                 elm.trigger('change');
+                if(newVal && !oldVal) {
+                  controller.$setPristine(true);
+                }
               });
             });
           }
