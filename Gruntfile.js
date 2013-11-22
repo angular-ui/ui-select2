@@ -23,15 +23,17 @@ module.exports = function (grunt) {
     },
     karma: {
       options: {
-        configFile: 'test/karma.conf.js'
+        configFile: 'test/karma.conf.js',
+        browsers: ['Firefox', 'PhantomJS']
       },
       unit: {
-        singleRun: true,
-        browsers: ['Firefox', 'PhantomJS']
+        singleRun: true
+      },
+      watch: {
+        autoWatch: true
       },
       server: {
-        background: true,
-        browsers: ['Firefox', 'PhantomJS']
+        background: true
       }
     },
     jshint: {
@@ -48,6 +50,7 @@ module.exports = function (grunt) {
 
   // Register tasks
   grunt.registerTask('default', ['jshint', 'karma:unit']);
+  grunt.registerTask('watch', ['jshint', 'karma:watch']);
 
   grunt.initConfig(initConfig);
 };
