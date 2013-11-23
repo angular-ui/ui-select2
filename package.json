@@ -7,7 +7,7 @@
     "select2"
   ],
   "description": "AngularUI - The companion suite for AngularJS",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "http://angular-ui.github.com",
   "repository": {
     "type": "git",
