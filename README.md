@@ -164,9 +164,11 @@ myAppModule.controller('MyController', function($scope) {
 });
 ```
 
-### Dynamic tags from a model
+### Dynamic tag suggestions
 
-It is possible to change the list of tag suggestions dynamically at runtime.
+It is possible to change the list of tag suggestions dynamically at runtime. There are a couple of methods to accomplish this.
+
+Both methods will assume the following HTML input:
 
 ```html
 <input
@@ -176,16 +178,44 @@ It is possible to change the list of tag suggestions dynamically at runtime.
     >
 ```
 
+#### Manipulating the tags array directly
+
 ```javascript
 myAppModule.controller('MyController', function($scope) {
-    var possible_tags = ['tag1', 'tag2', 'tag3', 'tag4'];
-    $scope.list_of_string = ['tag1', 'tag2']
+    var possible_tags = ['tag1', 'tag2'];
+    
+    $scope.list_of_string = ['tag1'];
+
+    $scope.select2Options = {
+        'multiple': true,
+        'simple_tags': true,
+        'tags': possible_tags
+    };
+    
+    // Add new tags
+    possible_tags.push('tag3');
+
+    // Replace all tags with a new array
+    possible_tags.splice(0, possible_tags.length);
+    possible_tags.push.apply(possible_tags, ['tag1', 'tag2', 'tag3']);
+});
+```
+
+#### Using a function to return the tags array
+
+If using the above method, it is not possible to set the `$scope.select2Options.tags` to a new array as this changes the object reference and breaks the data binding to the view. If you want to completely replace the tags array by setting it to a new reference, you can use the following approach:
+
+```javascript
+myAppModule.controller('MyController', function($scope) {
+    var possible_tags = ['tag1', 'tag2'];
+    $scope.list_of_string = ['tag1'];
     $scope.select2Options = {
         'multiple': true,
         'simple_tags': true,
         'tags': function () { return possible_tags; }
     };
     
-    // Can modify possible_tags and any new choices will be shown in the view
+    // Can modify possible_tags reference and new choices will be shown in the view
+    possible_tags = ['tag1', 'tag2', 'tag3', 'tag4'];
 });
 ```
