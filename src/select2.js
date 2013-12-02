@@ -96,8 +96,12 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               elm.select2('val', controller.$viewValue);
             } else {
               if (opts.multiple) {
+                var viewValue = controller.$viewValue;
+                if (angular.isString(controller.$viewValue)) {
+                  viewValue = viewValue.split(',');
+                }
                 elm.select2(
-                  'data', convertToSelect2Model(controller.$viewValue));
+                  'data', convertToSelect2Model(viewValue));
               } else {
                 if (angular.isObject(controller.$viewValue)) {
                   elm.select2('data', controller.$viewValue);
