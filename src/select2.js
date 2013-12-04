@@ -157,8 +157,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               var initSelection = opts.initSelection;
               opts.initSelection = function (element, callback) {
                 initSelection(element, function (value) {
+                  var isPristine = controller.$pristine;
                   controller.$setViewValue(convertToAngularModel(value));
                   callback(value);
+                  if (isPristine) {
+                    controller.$setPristine();
+                  }
+                  elm.prev().toggleClass('ng-pristine', controller.$pristine);
                 });
               };
             }
