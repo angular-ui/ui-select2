@@ -10,7 +10,7 @@
   ],
   "main": "./src/select2.js",
   "dependencies": {
-    "angular": ">=1.0.2",
+    "angular": ">=1.2.0",
     "select2": "~3.4",
     "jquery": ">=1.6.4"
   },
