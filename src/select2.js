@@ -183,6 +183,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
         if (attrs.ngMultiple) {
           scope.$watch(attrs.ngMultiple, function(newVal) {
+            attrs.$set('multiple', !!newVal);
             elm.select2(opts);
           });
         }
