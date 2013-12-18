@@ -7,6 +7,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-conventional-changelog');
 
   // Project configuration.
   initConfig = {
@@ -46,6 +47,11 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc'
       }
     },
+    changelog: {
+      options: {
+        dest: 'CHANGELOG.md'
+      }
+    }
   };
 
   // Register tasks
