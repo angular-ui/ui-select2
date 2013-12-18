@@ -4,10 +4,7 @@ module.exports = function (grunt) {
   var initConfig;
 
   // Loading external tasks
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-conventional-changelog');
+  require('load-grunt-tasks')(grunt);
 
   // Project configuration.
   initConfig = {
