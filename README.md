@@ -88,7 +88,7 @@ myAppModule.controller('MyController', function($scope) {
 </select>
 ```
 
-Some time it may make sense to specify the options in the template file.
+Some times it may make sense to specify the options in the template file.
 
 ```html
 <select ui-select2="{ allowClear: true}" ng-model="select2">
@@ -96,6 +96,14 @@ Some time it may make sense to specify the options in the template file.
     <option value="two">Second</option>
     <option value="three">Third</option>
 </select>
+```
+
+To define global defaults, you can configure the `uiSelect2Config` injectable:
+
+```javascript
+myAppModule.run(['uiSelect2Config', function(uiSelect2Config) {
+	uiSelect2Config.placeholder = "Placeholder text";
+}]);
 ```
 
 ## Working with ng-model
