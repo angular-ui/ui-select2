@@ -410,29 +410,40 @@ describe('uiSelect2', function () {
 
   });
 
-  describe('handle select2 callbacks', function(){
+  describe('handle select2 events', function(){
+
+    beforeEach(function(){
+      scope.options['events'] = {
+        'open' : function(){
+          console.log('Select just opened');
+        }
+      };
+    });
+
+    afterEach(function(){
+      delete scope.options['events'];
+    });
 
     var prefix = function(str){
       var prefixed = str.match(/select2-/);
-      return !prefixed ? "select2-".concat(str) : str
+      return !prefixed ? "select2-".concat(str) : str;
     };
+
+    it('should be present', function(){
+      expect(scope.options.events).toBeDefined();
+    });
 
     it('should add `select2-` to beginning of a string', function(){
       expect(prefix('open')).toEqual('select2-open');
     });
 
-    it('should rename callback name to meet `select2` callback convention', function(){
-      scope.options['callbacks'] = {
-        'open' : function(){
-          console.log('I\'m a callback');
-        }
-      }
-      angular.forEach(scope.options.callbacks, function(val, key){
-        scope.options.callbacks[prefix(key)] = val;
-        delete scope.options.callbacks[key];
+    it('should rename events name to meet `select2` event convention', function(){
+      angular.forEach(scope.options.events, function(val, key){
+        scope.options.events[prefix(key)] = val;
+        delete scope.options.events[key];
       });
-      expect(scope.options.callbacks['select2-open']).toBeDefined();
-      expect(scope.options.callbacks['open']).toBeUndefined();
+      expect(scope.options.events['select2-open']).toBeDefined();
+      expect(scope.options.events['open']).toBeUndefined();
     });
     
   });
