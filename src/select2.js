@@ -81,6 +81,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         }
 
         if(angular.isDefined(opts.callbacks)){
+          // help with naming, because adding 'select2-' to every callback should be optional.
           var prefixer = function(str){
             var prefixed = str.match(/select2-/);
             return !prefixed ? "select2-".concat(str) : str
@@ -91,7 +92,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             key = prefixer(key);
             elm.on(key, val);
           });
-          
+
           delete opts.callbacks;
         }
 
