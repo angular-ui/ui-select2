@@ -414,9 +414,12 @@ describe('uiSelect2', function () {
 
     beforeEach(function(){
       scope.options['events'] = {
-        'open' : function(){
-          console.log('Select just opened');
-        }
+          'change': function(e){
+            console.log('Things change...');
+          }
+        , 'open' : function(){
+            console.log('Select just opened');
+          }
       };
     });
 
@@ -426,15 +429,19 @@ describe('uiSelect2', function () {
 
     var prefix = function(str){
       var prefixed = str.match(/select2-/);
-      return !prefixed ? "select2-".concat(str) : str;
+      return prefixed || (str === 'change') ? str : "select2-".concat(str);
     };
 
     it('should be present', function(){
       expect(scope.options.events).toBeDefined();
     });
 
-    it('should add `select2-` to beginning of a string', function(){
+    it('should add `select2-` to beginning of "open"', function(){
       expect(prefix('open')).toEqual('select2-open');
+    });
+
+    it('should NOT add `select2-` to the beginning of a "change" event', function(){
+      expect(prefix('change')).toEqual('change');
     });
 
     it('should rename events name to meet `select2` event convention', function(){
