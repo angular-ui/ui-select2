@@ -80,6 +80,22 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           opts.multiple = true;
         }
 
+        if(angular.isDefined(opts.callbacks)){
+          var prefixer = function(str){
+            var prefixed = str.match(/select2-/);
+            return !prefixed ? "select2-".concat(str) : str
+          };
+
+          // Link select2 callbacks from options
+          angular.forEach(opts.callbacks, function(val, key){
+            key = prefixer(key);
+            elm.on(key, val);
+          });
+          
+          delete opts.callbacks;
+        }
+
+
         if (controller) {
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {

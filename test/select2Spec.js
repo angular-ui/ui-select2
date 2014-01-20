@@ -187,6 +187,7 @@ describe('uiSelect2', function () {
       expect(element.select2('val')).toBe('fourth');
     });
   });
+
   describe('with an <input> element', function () {
     describe('compiling this directive', function () {
       it('should throw an error if we have no model defined', function () {
@@ -408,4 +409,32 @@ describe('uiSelect2', function () {
     });
 
   });
+
+  describe('handle select2 callbacks', function(){
+
+    var prefix = function(str){
+      var prefixed = str.match(/select2-/);
+      return !prefixed ? "select2-".concat(str) : str
+    };
+
+    it('should add `select2-` to beginning of a string', function(){
+      expect(prefix('open')).toEqual('select2-open');
+    });
+
+    it('should rename callback name to meet `select2` callback convention', function(){
+      scope.options['callbacks'] = {
+        'open' : function(){
+          console.log('I\'m a callback');
+        }
+      }
+      angular.forEach(scope.options.callbacks, function(val, key){
+        scope.options.callbacks[prefix(key)] = val;
+        delete scope.options.callbacks[key];
+      });
+      expect(scope.options.callbacks['select2-open']).toBeDefined();
+      expect(scope.options.callbacks['open']).toBeUndefined();
+    });
+    
+  });
+
 });
