@@ -139,21 +139,19 @@
 				<div class="col-md-8 right">
 					<h3>Config</h3>
 					<pre><code>{
-  multiple: true,
-  query: function (query) {
-    query.callback({ results: states });
-  },
-  initSelection: function(element, callback) {
-    var val = $(element).val();
-    for (var i=0; i&lt;states.length; i++) {
-      for (var j=0; j&lt;states[i].children.length; j++) {
-        if (states[i].children[j].id == val) {
-          return callback(states[i].children[j]);
-        }
+    multiple: true,
+    query: function (query) {
+      query.callback({ results: states });
+    },
+    initSelection: function(element, callback) {
+      var val = $(element).select2('val'),
+        results = [];
+      for (var i=0; i&lt;val.length; i++) {
+        results.push(findState(val[i]));
       }
+      callback(results);
     }
-  }
-}</code></pre>
+  }</code></pre>
 					<h3>Value</h3>
 					<pre>{{ multi2Value }}</pre>
 				</div>
@@ -208,20 +206,14 @@
 				<div class="col-md-8 right">
 					<h3>Config</h3>
 					<pre><code>{
-  query: function (query) {
-    query.callback({ results: states });
-  },
-  initSelection: function(element, callback) {
-    var val = $(element).val();
-    for (var i=0; i&lt;states.length; i++) {
-      for (var j=0; j&lt;states[i].children.length; j++) {
-        if (states[i].children[j].id == val) {
-          return callback(states[i].children[j]);
-        }
-      }
+    query: function (query) {
+      query.callback({ results: states });
+    },
+    initSelection: function(element, callback) {
+      var val = $(element).select2('val');
+      return callback(findState(val));
     }
-  }
-}</code></pre>
+  }</code></pre>
 					<h3>Value</h3>
 					<pre>{{ arrayAsyncValue }}</pre>
 				</div>
