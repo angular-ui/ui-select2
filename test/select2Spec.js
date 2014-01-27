@@ -414,12 +414,12 @@ describe('uiSelect2', function () {
 
     beforeEach(function(){
       scope.options['events'] = {
-          'change': function(e){
-            console.log('Things change...');
-          }
-        , 'open' : function(){
-            console.log('Select just opened');
-          }
+        'change': function(e){
+          console.log('Things change...');
+        }, 
+        'open' : function(){
+          console.log('Select just opened');
+        }
       };
     });
 
