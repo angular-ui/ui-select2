@@ -83,7 +83,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         if (controller) {
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {
-            if (!current) {
+            if (angular.isUndefined(current) || null == current) {
               return;
             }
             if (current === old) {
