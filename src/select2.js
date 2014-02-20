@@ -144,6 +144,12 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               .toggleClass('ng-pristine', controller.$pristine);
             return value;
           });
+          
+          elm.on("select2-removed", function() {
+            scope.$apply(function() {
+              controller.$setViewValue(null);
+            });
+          });
 
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
