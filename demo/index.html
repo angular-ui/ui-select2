@@ -220,6 +220,200 @@
 			</div>
 		</article>
 
+		<article class="row" id="custom-element">
+			<h2>Custom Element</h2>
+			<div class="example row">
+				<div class="col-md-4 left">
+					<p>
+					The <tt>ui-select2</tt> directive can also be used as an element to allow for declarative configuration of some of select2's behaviors.
+					</p>
+					<h3>Value</h3>
+					<pre>{{ customElementValue }}</pre>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+&lt;/ui-select2></code></pre>
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+					</ui-select2>
+				</div>
+			</div>
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatResult</strong></label>
+					<p>
+						Results within the dropdown can be displayed with custom markup.
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-result>
+        &lt;strong>{{ id }}&lt;/strong>
+        &lt;i>{{ text }}&lt;/i>
+    &lt;/format-result>
+&lt;/ui-select2></code></pre>
+
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-result>
+							<strong>{{ id }}</strong>
+							<i>{{ text }}</i>
+						</format-result>
+					</ui-select2>
+
+				</div>
+			</div>
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatSelection</strong></label>
+					<p>
+						Selected results within the control can be displayed with custom markup.
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-selection>
+        &lt;strong>{{ id }}&lt;/strong>
+        &lt;i>{{ text }}&lt;/i>
+    &lt;/format-selection>
+&lt;/ui-select2></code></pre>
+
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-selection>
+							<strong>{{ id }}</strong>
+							<i>{{ text }}</i>
+						</format-selection>
+					</ui-select2>
+
+				</div>
+			</div>
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatNoMatches</strong></label>
+					<p>
+						The message shown when no results match the query can be displayed with custom markup. The template will be rendered with one local.
+						<ul>
+							<li><tt>input</tt> (<i>String</i>) the current search term</li>
+						</ul>
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-no-matches>
+        &lt;svg style="width: 16px; height: 16px">
+            &lt;circle fill="red" stroke-width="10" cx="8" cy="10" r="6" />
+        &lt;/svg>
+        No matches found for term
+        &lt;i>{{ input }}&lt;/i>
+    &lt;/format-no-matches>
+&lt;/ui-select2></code></pre>
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-no-matches>
+							<svg style="width: 16px; height: 16px">
+  							<circle fill="red" stroke-width="10" cx="8" cy="10" r="6" />
+							</svg>
+							No matches found for input
+							<i>{{ input }}</i>
+						</format-no-matches>
+					</ui-select2>
+				</div>
+			</div>
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatSearching</strong></label>
+					<p>
+						The message shown when retrieving query results asynchronously can be displayed with custom markup.
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-searching>
+        The
+        &lt;strong>SEARCH&lt;/strong>
+        continues.
+    &lt;/format-searching>
+&lt;/ui-select2></code></pre>
+
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-searching>
+							The
+							<strong>SEARCH</strong>
+							continues.
+						</format-searching>
+					</ui-select2>
+
+				</div>
+			</div>
+
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatInputTooShort</strong></label>
+					<p>
+						The message shown when the search term entered is too short can be displayed with custom markup. The template will be rendered with two locals.
+						<ul>
+							<li><tt>input</tt> (<i>String</i>) the current search term</li>
+							<li><tt>minimumInputLength</tt> (<i>Number</i>) the configured minimum input length</li>
+						</ul>
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-input-too-short>
+        Thy Input
+        &lt;strong>{{ input }}&lt;/strong>
+        Be Too Short By
+        &lt;i>{{ minimumInputLength - input.length }}&lt;/i>
+    &lt;/format-input-too-short>
+&lt;/ui-select2></code></pre>
+
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-input-too-short>
+							Thy Input
+							<strong>{{ term }}</strong>
+							Be Too Short By
+							<i>{{ minimumInputLength - input.length }}</i>
+						</format-input-too-short>
+					</ui-select2>
+
+				</div>
+			</div>
+
+
+			<div class="example row">
+				<div class="col-md-4 left">
+					<label><strong>formatSelectionTooBig</strong></label>
+					<p>
+						The messaging shown when attempting to add another selection to an already-full multi-select can be displayed with custom markup. The template will be rendered with one local.
+						<ul>
+							<li><tt>maximumSelectionSize</tt> (<i>Number</i>) the configured maximum number of selected values</li>
+						</ul>
+					</p>
+				</div>
+				<div class="col-md-8 right">
+					<pre><code ng-non-bindable>&lt;ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+    &lt;format-selection-too-big>
+        Surely,
+        &lt;strong>{{ maximumSelectionSize }}&lt;/strong>
+        is sufficient.
+    &lt;/format-selection-too-big>
+&lt;/ui-select2></code></pre>
+
+					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
+						<format-selection-too-big>
+							Surely,
+							<strong>{{ maximumSelectionSize }}</strong>
+							is sufficient.
+						</format-selection-too-big>
+					</ui-select2>
+
+				</div>
+			</div>
+
+		</article>
+
 	</div>
 </body>
 </html>
