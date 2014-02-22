@@ -13,24 +13,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
   return {
     require: 'ngModel',
     priority: 1,
-    compile: function (tElm, tAttrs) {
-      var watch,
-        repeatOption,
-        repeatAttr,
-        isSelect = tElm.is('select'),
+    transclude: true,
+    compile: function (tElm, tAttrs, transclude) {
+      var isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
 
-      // Enable watching of the options dataset if in use
-      if (isSelect) {
-        repeatOption = tElm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
-
-        if (repeatOption.length) {
-          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
-          watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
-        }
-      }
-
       return function (scope, elm, attrs, controller) {
+        elm.append(transclude(scope));
+
         // instance-specific options
         var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
 
@@ -114,23 +104,37 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             }
           };
 
-          // Watch the options dataset for changes
-          if (watch) {
-            scope.$watch(watch, function (newVal, oldVal, scope) {
-              if (angular.equals(newVal, oldVal)) {
-                return;
+          $timeout(function () {
+            var watch, repeatOption, repeatAttr;
+
+            // Enable watching of the options dataset if in use
+            if (isSelect) {
+              repeatOption = elm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
+
+              if (repeatOption.length) {
+                repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
+                watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
               }
-              // Delayed so that the options have time to be rendered
-              $timeout(function () {
-                elm.select2('val', controller.$viewValue);
-                // Refresh angular to remove the superfluous option
-                elm.trigger('change');
-                if(newVal && !oldVal && controller.$setPristine) {
-                  controller.$setPristine(true);
+            }
+
+            // Watch the options dataset for changes
+            if (watch) {
+              scope.$watch(watch, function (newVal, oldVal, scope) {
+                if (angular.equals(newVal, oldVal)) {
+                  return;
                 }
+                // Delayed so that the options have time to be rendered
+                $timeout(function () {
+                  elm.select2('val', controller.$viewValue);
+                  // Refresh angular to remove the superfluous option
+                  elm.trigger('change');
+                  if (newVal && !oldVal && controller.$setPristine) {
+                    controller.$setPristine(true);
+                  }
+                });
               });
-            });
-          }
+            }
+          });
 
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
