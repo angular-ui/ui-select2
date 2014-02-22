@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html ng-app="angular-ui-select2-demo">
 <head>
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="bower_components/select2/select2.css">
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../bower_components/select2/select2.css">
 	<style>
 	.container {
 		padding-bottom: 4em;
@@ -29,11 +29,11 @@
 		margin-top: 1em;
 	}
 	</style>
-	<script src="bower_components/jquery/jquery.js"></script>
-	<script src="bower_components/select2/select2.js"></script>
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/angular-ui-select2/src/select2.js"></script>
-	<script src="app.js"></script>
+	<script src="../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../bower_components/select2/select2.js"></script>
+	<script src="../bower_components/angular/angular.js"></script>
+	<script src="../src/select2.js"></script>
+	<script src="./app.js"></script>
 	<script>
 	$(function() {
 		var opts=$('#source').html(), opts2='<option></option>'+opts;
@@ -372,7 +372,7 @@
 					<ui-select2 style="width:300px" options="customElementConfig" ng-model="customElementValue">
 						<format-input-too-short>
 							Thy Input
-							<strong>{{ term }}</strong>
+							<strong>{{ input }}</strong>
 							Be Too Short By
 							<i>{{ minimumInputLength - input.length }}</i>
 						</format-input-too-short>

@@ -76,6 +76,36 @@ app.controller('MainCtrl', function ($scope, $element) {
     }
   }
 
+  function forEachState (fn) {
+    for (var i=0; i<states.length; i++) {
+      for (var j=0; j<states[i].children.length; j++) {
+        fn(states[i].children[j]);
+      }
+    }
+  }
+
+  function fuzzyMatch (needle, hay) {
+    return (new RegExp('.*' + needle + '.*', 'gi')).test(hay);
+  };
+
+  function fuzzyMatchQuery (query) {
+    if (!query.term) {
+      query.callback({ results: states });
+      return;
+    }
+
+    var results = [];
+    forEachState(function (state) {
+      if (fuzzyMatch(query.term, state.text)) {
+        results.push(state);
+      }
+    });
+
+    setTimeout(function () {
+      query.callback({ results: results });
+    }, 500);
+  }
+
   $scope.multi2Value = ['CO', 'WA'];
 
   $scope.multi = {
@@ -110,5 +140,13 @@ app.controller('MainCtrl', function ($scope, $element) {
       return callback(findState(val));
     }
   };
+
+  $scope.customElementConfig = {
+    multiple: true,
+    query: fuzzyMatchQuery,
+    minimumInputLength: 3,
+    maximumSelectionSize: 2
+  };
+  $scope.customElementValue = [{ id: 'OR', text: 'Oregon' }];
 
 });
