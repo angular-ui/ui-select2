@@ -89,7 +89,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             if (current === old) {
               return;
             }
-            if(typeof current != typeof old) {
+            if(typeof current !== typeof old) {
               // Update the scope on your own
               return;
             }
