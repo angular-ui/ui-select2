@@ -207,10 +207,18 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
           if (!opts.initSelection && !isSelect) {
             var isPristine = controller.$pristine;
+            if(isPristine)
+            {
+                //fix wrong dirty flag when initializiing via expression
+                controller.$pristine = false;
+                controller.$dirty = true;
+            }
             controller.$setViewValue(
               convertToAngularModel(elm.select2('data'))
             );
             if (isPristine) {
+              controller.$pristine = true;
+              controller.$dirty = false;
               controller.$setPristine();
             }
             elm.prev().toggleClass('ng-pristine', controller.$pristine);
