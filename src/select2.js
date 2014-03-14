@@ -96,6 +96,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               elm.select2('val', controller.$viewValue);
             } else {
               if (opts.multiple) {
+                controller.$isEmpty = function (value) {
+                  return !value || value.length === 0;
+                };
                 var viewValue = controller.$viewValue;
                 if (angular.isString(viewValue)) {
                   viewValue = viewValue.split(',');
