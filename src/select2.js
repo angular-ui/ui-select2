@@ -14,20 +14,17 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
     require: 'ngModel',
     priority: 1,
     compile: function (tElm, tAttrs) {
-      var watch,
-        repeatOption,
-        repeatAttr,
+      var watches = [],
         isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
 
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
-        repeatOption = tElm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
-
-        if (repeatOption.length) {
-          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
-          watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
-        }
+        watches = tElm.find('[ng-repeat], [data-ng-repeat]').map(function() {
+          var repeatOption = $(this);
+          var repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
+          return jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
+        }).get();
       }
 
       return function (scope, elm, attrs, controller) {
@@ -115,7 +112,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           };
 
           // Watch the options dataset for changes
-          if (watch) {
+          angular.forEach(watches, function(watch) {
             scope.$watch(watch, function (newVal, oldVal, scope) {
               if (angular.equals(newVal, oldVal)) {
                 return;
@@ -130,7 +127,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                 }
               });
             });
-          }
+          });
 
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
@@ -149,7 +146,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function (e) {
               e.stopImmediatePropagation();
-              
+
               if (scope.$$phase || scope.$root.$$phase) {
                 return;
               }
@@ -199,8 +196,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         $timeout(function () {
           elm.select2(opts);
 
-          // Set initial value - I'm not sure about this but it seems to need to be there
-          elm.select2('data', controller.$modelValue);
           // important!
           controller.$render();
 
