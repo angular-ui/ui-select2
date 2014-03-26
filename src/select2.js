@@ -17,6 +17,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       var watch,
         repeatOption,
         repeatAttr,
+        init = false,
         isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
 
@@ -93,7 +94,12 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           }, true);
           controller.$render = function () {
             if (isSelect) {
-              elm.select2('val', controller.$viewValue);
+                $timeout(function() {
+                    if(!init) {
+                        elm.select2('val', controller.$viewValue);
+                        init = controller.$viewValue != undefined;
+                    }
+                });
             } else {
               if (opts.multiple) {
                 var viewValue = controller.$viewValue;
