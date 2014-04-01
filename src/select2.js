@@ -98,6 +98,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               if (opts.multiple) {
                 var viewValue = controller.$viewValue;
                 if (angular.isString(viewValue)) {
+                  if (opts.ajax) {
+                    return;
+                  }
                   viewValue = viewValue.split(',');
                 }
                 elm.select2(
