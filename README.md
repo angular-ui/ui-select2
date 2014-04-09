@@ -155,7 +155,7 @@ as a list of strings, and not convert it into a list of Select2 tag objects.
 
 ```html
 <input
-    type="text"
+    type="hidden"
     ui-select2="select2Options"
     ng-model="list_of_string"
     >
