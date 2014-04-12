@@ -5,7 +5,7 @@
  *     This change is so that you do not have to do an additional query yourself on top of Select2's own query
  * @params [options] {object} The configuration options passed to $.fn.select2(). Refer to the documentation
  */
-angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', function (uiSelect2Config, $timeout) {
+angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', '$interpolate', function (uiSelect2Config, $timeout, $interpolate) {
   var options = {};
   if (uiSelect2Config) {
     angular.extend(options, uiSelect2Config);
@@ -13,26 +13,21 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
   return {
     require: 'ngModel',
     priority: 1,
-    compile: function (tElm, tAttrs) {
-      var watch,
-        repeatOption,
-        repeatAttr,
-        isSelect = tElm.is('select'),
+    restrict: 'AE',
+    transclude: true,
+    compile: function (tElm, tAttrs, transclude) {
+      var isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
 
-      // Enable watching of the options dataset if in use
-      if (tElm.is('select')) {
-        repeatOption = tElm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
-
-        if (repeatOption.length) {
-          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
-          watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
-        }
-      }
-
       return function (scope, elm, attrs, controller) {
+        if (elm.is('ui-select2')) {
+          elm.append('<input type="hidden">');
+        }
+
+        elm.append(transclude(scope));
+
         // instance-specific options
-        var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
+        var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2 || attrs.options));
 
         /*
         Convert from Select2 view-model to Angular view-model.
@@ -91,6 +86,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             }
             controller.$render();
           }, true);
+
           controller.$render = function () {
             if (isSelect) {
               elm.select2('val', controller.$viewValue);
@@ -114,23 +110,37 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             }
           };
 
-          // Watch the options dataset for changes
-          if (watch) {
-            scope.$watch(watch, function (newVal, oldVal, scope) {
-              if (angular.equals(newVal, oldVal)) {
-                return;
+          $timeout(function () {
+            var watch, repeatOption, repeatAttr;
+
+            // Enable watching of the options dataset if in use
+            if (isSelect) {
+              repeatOption = elm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
+
+              if (repeatOption.length) {
+                repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
+                watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
               }
-              // Delayed so that the options have time to be rendered
-              $timeout(function () {
-                elm.select2('val', controller.$viewValue);
-                // Refresh angular to remove the superfluous option
-                elm.trigger('change');
-                if(newVal && !oldVal && controller.$setPristine) {
-                  controller.$setPristine(true);
+            }
+
+            // Watch the options dataset for changes
+            if (watch) {
+              scope.$watch(watch, function (newVal, oldVal, scope) {
+                if (angular.equals(newVal, oldVal)) {
+                  return;
                 }
+                // Delayed so that the options have time to be rendered
+                $timeout(function () {
+                  elm.select2('val', controller.$viewValue);
+                  // Refresh angular to remove the superfluous option
+                  elm.trigger('change');
+                  if (newVal && !oldVal && controller.$setPristine) {
+                    controller.$setPristine(true);
+                  }
+                });
               });
-            });
-          }
+            }
+          });
 
           // Update valid and dirty statuses
           controller.$parsers.push(function (value) {
@@ -174,6 +184,55 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               };
             }
           }
+        }
+
+        var formatResultElm          = elm.find('format-result').remove(),
+            formatSelectionElm       = elm.find('format-selection').remove(),
+            formatNoMatchesElm       = elm.find('format-no-matches').remove(),
+            formatSearchingElm       = elm.find('format-searching').remove(),
+            formatInputTooShortElm   = elm.find('format-input-too-short').remove(),
+            formatSelectionTooBigElm = elm.find('format-selection-too-big').remove();
+
+        if (formatResultElm.length) {
+          formatResultElm = formatResultElm[0].outerHTML;
+          opts.formatResult = function (model, eh___someLabel, query, escape) {
+            return $interpolate(formatResultElm)(model);
+          };
+        }
+
+        if (formatSelectionElm.length) {
+          formatSelectionElm = formatSelectionElm[0].outerHTML;
+          opts.formatSelection = function (model, eh___someLabel, escape) {
+            return $interpolate(formatSelectionElm)(model);
+          };
+        }
+
+        if (formatNoMatchesElm.length) {
+          formatNoMatchesElm = formatNoMatchesElm[0].outerHTML;
+          opts.formatNoMatches = function (input) {
+            return $interpolate(formatNoMatchesElm)({ input: input });
+          };
+        }
+
+        if (formatSearchingElm.length) {
+          formatSearchingElm = formatSearchingElm[0].outerHTML;
+          opts.formatSearching = function () {
+            return $interpolate(formatSearchingElm)({});
+          };
+        }
+
+        if (formatInputTooShortElm.length) {
+          formatInputTooShortElm = formatInputTooShortElm[0].outerHTML;
+          opts.formatInputTooShort = function (input, minimumInputLength) {
+            return $interpolate(formatInputTooShortElm)({ input: input, minimumInputLength: minimumInputLength });
+          };
+        }
+
+        if (formatSelectionTooBigElm.length) {
+          formatSelectionTooBigElm = formatSelectionTooBigElm[0].outerHTML;
+          opts.formatSelectionTooBig = function (maximumSelectionSize) {
+            return $interpolate(formatSelectionTooBigElm)({ maximumSelectionSize: maximumSelectionSize });
+          };
         }
 
         elm.bind("$destroy", function() {

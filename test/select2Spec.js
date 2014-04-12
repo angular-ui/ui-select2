@@ -189,6 +189,14 @@ describe('uiSelect2', function () {
   });
   describe('with an <input> element', function () {
     describe('compiling this directive', function () {
+      function configFromSpy (spy) {
+        for (var i = 0, len = spy.callCount; i < len; i++) {
+          if (spy.argsForCall[i][0].query) {
+            return spy.argsForCall[i][0];
+          }
+        }
+      }
+
       it('should throw an error if we have no model defined', function () {
         expect(function() {
           compile('<input ui-select2/>');
@@ -200,6 +208,123 @@ describe('uiSelect2', function () {
       });
       it('should not modify the model if there is no initial value', function(){
         //TODO 
+      });
+      it('should compile to input as element', function () {
+        var element = compile('<ui-select2 options="options" ng-model="foo"></ui-select2>');
+        expect(element.children().is('input[type=hidden]')).toBe(true);
+      });
+      it('should compile format-result', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-result>'                             +
+                '<strong>{{text}}</strong>'                 +
+              '</format-result>'                            +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatResult;
+        expect(fn({ text: 'Congratulations' }))
+          .toBe('<format-result class="ng-scope"><strong class="ng-binding">Congratulations</strong></format-result>');
+
+        // format-result block is removed
+        expect(element.find('format-result').length).toBe(0);
+      });
+      it('should compile format-selection', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-selection>'                          +
+                '<strong>{{text}}</strong>'                 +
+              '</format-result>'                            +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatSelection;
+        expect(fn({ text: 'Impressive' }))
+          .toBe('<format-selection class="ng-scope"><strong class="ng-binding">Impressive</strong></format-selection>');
+
+        // format-selection block is removed
+        expect(element.find('format-selection').length).toBe(0);
+      });
+      it('should compile format-no-matches', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-no-matches>'                         +
+                '<strong>{{input}}</strong>'                +
+              '</format-no-matches>'                        +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatNoMatches;
+        expect(fn('Dag'))
+          .toBe('<format-no-matches class="ng-scope"><strong class="ng-binding">Dag</strong></format-no-matches>');
+
+        // format-no-matches block is removed
+        expect(element.find('format-no-matches').length).toBe(0);
+      });
+      it('should compile format-searching', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-searching>'                          +
+                '<strong>?</strong>'                        +
+              '</format-searching>'                         +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatSearching;
+        expect(fn('Dag'))
+          .toBe('<format-searching class="ng-scope"><strong>?</strong></format-searching>');
+
+        // format-searching block is removed
+        expect(element.find('format-searching').length).toBe(0);
+      });
+      it('should compile format-input-too-short', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-input-too-short>'                    +
+                '<strong>{{ input }}<strong>'               +
+                ' is '                                      +
+                '<i>{{ minimumInputLength - input.length }}</i>' +
+                ' character(s) too short'                   +
+              '</format-input-too-short>'                   +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatInputTooShort;
+        expect(fn('bin', 5))
+          .toBe('<format-input-too-short class="ng-scope"><strong class="ng-binding">bin<strong> is <i class="ng-binding">2</i> character(s) too short</strong></strong></format-input-too-short>');
+
+        // format-input-too-short block is removed
+        expect(element.find('format-input-too-short').length).toBe(0);
+      });
+      it('should compile format-selection-too-big', function () {
+        spyOn($.fn, 'select2');
+
+        var element = compile(
+            '<ui-select2 options="options" ng-model="foo">' +
+              '<format-selection-too-big>'                  +
+                'No more than '                             +
+                '<strong>{{ maximumSelectionSize }}<strong>' +
+                ' selections please.'                       +
+              '</format-selection-too-big>'                 +
+            '</ui-select2>');
+
+        // Find the `select2` call made with the configuration object
+        var fn = configFromSpy(element.select2).formatSelectionTooBig;
+        expect(fn(5))
+          .toBe('<format-selection-too-big class="ng-scope">No more than <strong class="ng-binding">5<strong> selections please.</strong></strong></format-selection-too-big>');
+
+        // format-selection-too-big block is removed
+        expect(element.find('format-selection-too-big').length).toBe(0);
       });
     });
     describe('when model is changed programmatically', function(){

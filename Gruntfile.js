@@ -54,6 +54,7 @@ module.exports = function (grunt) {
   // Register tasks
   grunt.registerTask('default', ['jshint', 'karma:unit']);
   grunt.registerTask('watch', ['jshint', 'karma:watch']);
+  grunt.registerTask('test', ['karma:unit']);
 
   grunt.initConfig(initConfig);
 };

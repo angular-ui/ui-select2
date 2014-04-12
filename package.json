@@ -26,5 +26,8 @@
     "karma": "~0.10.2",
     "grunt-conventional-changelog": "~1.0.0",
     "load-grunt-tasks": "~0.2.0"
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }
