@@ -4,7 +4,7 @@ This directive allows you to enhance your select elements with behaviour from th
 
 # Requirements
 
-- [AngularJS](http://angularjs.org/)
+- [AngularJS](http://angularjs.org/) - A recent version. ui-select2 will not work with v1.0.7 or older.
 - [JQuery](http://jquery.com/)
 - [Select2](http://ivaynberg.github.io/select2/)
 
