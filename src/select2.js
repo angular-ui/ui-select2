@@ -6,6 +6,9 @@
  * @params [options] {object} The configuration options passed to $.fn.select2(). Refer to the documentation
  */
 angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', function (uiSelect2Config, $timeout) {
+
+  NG_OPTIONS_REGEXP = /^\s*(.*?)(?:\s+as\s+(.*?))?(?:\s+group\s+by\s+(.*))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+(.*?)(?:\s+track\s+by\s+(.*?))?$/
+
   var options = {};
   if (uiSelect2Config) {
     angular.extend(options, uiSelect2Config);
@@ -17,8 +20,13 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       var watch,
         repeatOption,
         repeatAttr,
+        hasOptions = !!tAttrs.ngOptions,
         isSelect = tElm.is('select'),
         isMultiple = angular.isDefined(tAttrs.multiple);
+
+      if (hasOptions) {
+        hasOptions = tAttrs.ngOptions.match(NG_OPTIONS_REGEXP)[7];
+      }
 
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
@@ -93,7 +101,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           }, true);
           controller.$render = function () {
             if (isSelect) {
-              elm.select2('val', controller.$viewValue);
+              elm.select2('val', elm.val());
             } else {
               if (opts.multiple) {
                 var viewValue = controller.$viewValue;
@@ -108,7 +116,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                 } else if (!controller.$viewValue) {
                   elm.select2('data', null);
                 } else {
-                  elm.select2('val', controller.$viewValue);
+                  elm.select2('val', elm.val());
                 }
               }
             }
@@ -122,13 +130,19 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               }
               // Delayed so that the options have time to be rendered
               $timeout(function () {
-                elm.select2('val', controller.$viewValue);
+                elm.select2('val', elm.val());
                 // Refresh angular to remove the superfluous option
                 elm.trigger('change');
                 if(newVal && !oldVal && controller.$setPristine) {
                   controller.$setPristine(true);
                 }
               });
+            });
+          }
+
+          if (hasOptions) {
+            scope.$watchCollection(hasOptions, function(newVal, oldVal) {
+              elm.select2('val', elm.val());
             });
           }
 
