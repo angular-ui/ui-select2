@@ -7,7 +7,7 @@
  */
 angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', function (uiSelect2Config, $timeout) {
 
-  NG_OPTIONS_REGEXP = /^\s*(.*?)(?:\s+as\s+(.*?))?(?:\s+group\s+by\s+(.*))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+(.*?)(?:\s+track\s+by\s+(.*?))?$/
+  var NG_OPTIONS_REGEXP = /^\s*(.*?)(?:\s+as\s+(.*?))?(?:\s+group\s+by\s+(.*))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+(.*?)(?:\s+track\s+by\s+(.*?))?$/;
 
   var options = {};
   if (uiSelect2Config) {
@@ -161,9 +161,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
-            elm.bind("change", function (e) {
+            elm.bind('change', function (e) {
               e.stopImmediatePropagation();
-              
+
               if (scope.$$phase || scope.$root.$$phase) {
                 return;
               }
@@ -190,8 +190,8 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           }
         }
 
-        elm.bind("$destroy", function() {
-          elm.select2("destroy");
+        elm.bind('$destroy', function() {
+          elm.select2('destroy');
         });
 
         attrs.$observe('disabled', function (value) {
