@@ -7,5 +7,6 @@
     "noarg": true,
     "sub": true,
     "boss": true,
-    "eqnull": true
+    "eqnull": true,
+    "jquery": true
 }
