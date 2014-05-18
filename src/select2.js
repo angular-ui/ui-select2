@@ -14,6 +14,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
     require: 'ngModel',
     priority: 1,
     compile: function (tElm, tAttrs) {
+      // Do this to use the external jQuery instead of angular.element
+      // if angular is loaded with jQlite and not jQuery
+      tElm = $(tElm[0]);
+
       var watch,
         repeatOption,
         repeatAttr,
@@ -22,7 +26,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
       // Enable watching of the options dataset if in use
       if (tElm.is('select')) {
-        repeatOption = tElm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
+        repeatOption = tElm.find('optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
 
         if (repeatOption.length) {
           repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
@@ -31,6 +35,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
       }
 
       return function (scope, elm, attrs, controller) {
+        // Do this to use the external jQuery instead of angular.element
+        // if angular is loaded with jQlite and not jQuery
+        elm = $(elm[0]);
+
         // instance-specific options
         var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
 
@@ -98,7 +106,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               if (opts.multiple) {
                 var viewValue = controller.$viewValue;
                 if (angular.isString(viewValue)) {
-                  viewValue = viewValue.split(',');
+                  viewValue = viewValue.split(opts.separator || ',');
                 }
                 elm.select2(
                   'data', convertToSelect2Model(viewValue));
