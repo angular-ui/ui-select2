@@ -21,7 +21,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         isMultiple = angular.isDefined(tAttrs.multiple);
 
       // Enable watching of the options dataset if in use
-      if (tElm.is('select')) {
+      if (isSelect) {
         repeatOption = tElm.find( 'optgroup[ng-repeat], optgroup[data-ng-repeat], option[ng-repeat], option[data-ng-repeat]');
 
         if (repeatOption.length) {
