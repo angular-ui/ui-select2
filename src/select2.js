@@ -181,7 +181,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                   var isPristine = controller.$pristine;
                   controller.$setViewValue(convertToAngularModel(value));
                   callback(value);
-                  if (isPristine) {
+                  if (isPristine && controller.$setPristine) {
                     controller.$setPristine();
                   }
                   elm.prev().toggleClass('ng-pristine', controller.$pristine);
@@ -225,7 +225,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             controller.$setViewValue(
               convertToAngularModel(elm.select2('data'))
             );
-            if (isPristine) {
+            if (isPristine && controller.$setPristine) {
               controller.$setPristine();
             }
             elm.prev().toggleClass('ng-pristine', controller.$pristine);
