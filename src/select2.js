@@ -139,7 +139,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               $timeout(function () {
                 elm.select2('val', controller.$viewValue);
                 // Refresh angular to remove the superfluous option
-                elm.trigger('change');
+                controller.$render();
                 if(newVal && !oldVal && controller.$setPristine) {
                   controller.$setPristine(true);
                 }
@@ -221,13 +221,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
           // Not sure if I should just check for !isSelect OR if I should check for 'tags' key
           if (!opts.initSelection && !isSelect) {
-            var isPristine = controller.$pristine;
-            controller.$setViewValue(
-              convertToAngularModel(elm.select2('data'))
-            );
-            if (isPristine) {
-              controller.$setPristine();
-            }
+              var isPristine = controller.$pristine;
+              controller.$pristine = false;
+              controller.$setViewValue(
+                  convertToAngularModel(elm.select2('data'))
+              );
+              if (isPristine) {
+                  controller.$setPristine();
+              }
             elm.prev().toggleClass('ng-pristine', controller.$pristine);
           }
         });
