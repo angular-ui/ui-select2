@@ -105,6 +105,18 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                 }
                 elm.select2(
                   'data', convertToSelect2Model(viewValue));
+                if (opts.sortable) {
+                  elm.select2("container").find("ul.select2-choices").sortable({
+                    containment: 'parent',
+                    start: function () {
+                      elm.select2("onSortStart");
+                    },
+                    update: function () {
+                      elm.select2("onSortEnd");
+                      elm.trigger('change');
+                    }
+                  });
+                }                  
               } else {
                 if (angular.isObject(controller.$viewValue)) {
                   elm.select2('data', controller.$viewValue);
