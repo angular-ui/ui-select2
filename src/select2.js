@@ -204,10 +204,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         });
 
         attrs.$observe('toggle', function (value) {
-            if (!value) return;
-            angular.element(value).bind('click', function () {
-                elm.select2('open');
-            });
+            if (value) {
+                angular.element(value).bind('click', function () {
+                    elm.select2('open');
+                });
+            }
         });
 
         if (attrs.ngMultiple) {
