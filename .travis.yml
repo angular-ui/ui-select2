@@ -11,3 +11,6 @@
   - npm install
 
  script: "grunt"
+
+ git:
+   depth: 10
