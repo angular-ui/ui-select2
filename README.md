@@ -1,4 +1,4 @@
-ui-select2   [![Build Status](https://travis-ci.org/angular-ui/ui-select2.png)](https://travis-ci.org/angular-ui/ui-select2)
+ui-select2   [![Build Status](https://travis-ci.org/angular-ui/ui-select2.svg)](https://travis-ci.org/angular-ui/ui-select2)
 ==========
 This directive allows you to enhance your select elements with behaviour from the [select2](http://ivaynberg.github.io/select2/) library.
 
