@@ -14,7 +14,7 @@
     "url": "git://github.com/angular-ui/ui-select2.git"
   },
   "engines": {
-    "node": ">= 0.8.4"
+    "node": ">= 0.10.x"
   },
   "dependencies": {},
   "devDependencies": {
