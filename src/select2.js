@@ -147,18 +147,21 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             });
           }
 
+          function validate(value) {
+              var div = elm.prev();
+              div
+                  .toggleClass('ng-invalid', !controller.$valid)
+                  .toggleClass('ng-valid', controller.$valid)
+                  .toggleClass('ng-invalid-required', !controller.$valid)
+                  .toggleClass('ng-valid-required', controller.$valid)
+                  .toggleClass('ng-dirty', controller.$dirty)
+                  .toggleClass('ng-pristine', controller.$pristine);
+              return value;
+          }
+
           // Update valid and dirty statuses
-          controller.$parsers.push(function (value) {
-            var div = elm.prev();
-            div
-              .toggleClass('ng-invalid', !controller.$valid)
-              .toggleClass('ng-valid', controller.$valid)
-              .toggleClass('ng-invalid-required', !controller.$valid)
-              .toggleClass('ng-valid-required', controller.$valid)
-              .toggleClass('ng-dirty', controller.$dirty)
-              .toggleClass('ng-pristine', controller.$pristine);
-            return value;
-          });
+          controller.$parsers.push(validate);
+          controller.$formatters.push(validate);
 
           if (!isSelect) {
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
