@@ -41,7 +41,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
 
 
-                if (opts == undefined) {
+                if (opts === undefined) {
                     opts = {};
                 }
 
@@ -189,7 +189,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                                 console.log(elm.select2('val'));
                                 controller.$setViewValue(elm.select2('val'));
 
-                                if (scope.uiData != undefined) {
+                                if (scope.uiData !== undefined) {
                                     scope.uiData = convertToAngularModel(elm.select2('data'));
                                 }
                             });
@@ -203,7 +203,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
                                     controller.$setViewValue(value.id);
 
-                                    if (scope.uiData != undefined) {
+                                    if (scope.uiData !== undefined) {
                                         scope.uiData = convertToAngularModel(value);
                                     }
 
@@ -260,7 +260,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                             elm.select2('val')
                         );
 
-                        if (scope.uiData != undefined) {
+                        if (scope.uiData !== undefined) {
                             scope.uiData = convertToAngularModel(elm.select2('data'));
                         }
 
