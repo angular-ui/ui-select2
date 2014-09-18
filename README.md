@@ -1,5 +1,15 @@
-ui-select2   [![Build Status](https://travis-ci.org/angular-ui/ui-select2.png)](https://travis-ci.org/angular-ui/ui-select2)
-==========
+ui-select2  (deprecated)  [![Build Status](https://travis-ci.org/angular-ui/ui-select2.png)](https://travis-ci.org/angular-ui/ui-select2)
+========================
+
+# Annoucement
+
+
+This **directive is now obsolete**. A new initiative, more active, and 100% angular is available at https://github.com/angular-ui/ui-select.
+
+As development slowed down on ui-select2, it is getting unlikely that bugs will be fixed. So the new alternative should be used as soon as possible.
+
+# Description
+
 This directive allows you to enhance your select elements with behaviour from the [select2](http://ivaynberg.github.io/select2/) library.
 
 # Requirements
