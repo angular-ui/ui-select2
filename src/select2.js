@@ -83,7 +83,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         if (controller) {
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {
-            if (!current) {
+            if (angular.isUndefined(current) || null === current) {
               return;
             }
             if (current === old) {
@@ -120,7 +120,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               } else {
                 if (angular.isObject(controller.$viewValue)) {
                   elm.select2('data', controller.$viewValue);
-                } else if (!controller.$viewValue) {
+                } else if (angular.isUndefined(controller.$viewValue) || null === controller.$viewValue) {
                   elm.select2('data', null);
                 } else {
                   elm.select2('val', controller.$viewValue);
