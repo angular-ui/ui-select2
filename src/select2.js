@@ -161,6 +161,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           });
 
           if (!isSelect) {
+            // Fixed IE bug with triggering events with string data type from input directive instead of objects processed by select2
+            if (!$sniffer.hasEvent('input')) {
+              elm.unbind("change");
+            }
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function (e) {
               e.stopImmediatePropagation();
