@@ -6,6 +6,7 @@
  * @params [options] {object} The configuration options passed to $.fn.select2(). Refer to the documentation
  */
 angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelect2', ['uiSelect2Config', '$timeout', function (uiSelect2Config, $timeout) {
+  ATTR_WHITELIST = ['width', 'placeholder', 'minimumResultsForSearch'];
   var options = {};
   if (uiSelect2Config) {
     angular.extend(options, uiSelect2Config);
@@ -32,7 +33,12 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
 
       return function (scope, elm, attrs, controller) {
         // instance-specific options
-        var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2));
+        instOpts = {};
+        angular.forEach(attrs, function(value, attr){
+            if (ATTR_WHITELIST.indexOf(attr) > -1)
+                instOpts[attr] = value;
+        });
+        var opts = angular.extend({}, options, scope.$eval(attrs.uiSelect2), instOpts);
 
         /*
         Convert from Select2 view-model to Angular view-model.
