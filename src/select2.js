@@ -168,6 +168,10 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               if (scope.$$phase || scope.$root.$$phase) {
                 return;
               }
+              
+              if(opts.formatModel){
+                  controller.$parsers.unshift(opts.formatModel);
+              }
               scope.$apply(function () {
                 controller.$setViewValue(
                   convertToAngularModel(elm.select2('data')));
