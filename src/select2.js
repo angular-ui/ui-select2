@@ -116,7 +116,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                       elm.trigger('change');
                     }
                   });
-                }                  
+                }
               } else {
                 if (angular.isObject(controller.$viewValue)) {
                   elm.select2('data', controller.$viewValue);
@@ -164,7 +164,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function (e) {
               e.stopImmediatePropagation();
-              
+
               if (scope.$$phase || scope.$root.$$phase) {
                 return;
               }
@@ -195,14 +195,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           elm.select2("destroy");
         });
 
-        attrs.$observe('disabled', function (value) {
-          elm.select2('enable', !value);
-        });
-
-        attrs.$observe('readonly', function (value) {
-          elm.select2('readonly', !!value);
-        });
-
         if (attrs.ngMultiple) {
           scope.$watch(attrs.ngMultiple, function(newVal) {
             attrs.$set('multiple', !!newVal);
@@ -231,6 +223,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               }
             elm.prev().toggleClass('ng-pristine', controller.$pristine);
           }
+
+          attrs.$observe('disabled', function (value) {
+            elm.select2('enable', !value);
+          });
+
+          attrs.$observe('readonly', function (value) {
+            elm.select2('readonly', !!value);
+          });
         });
       };
     }
