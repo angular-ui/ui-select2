@@ -196,6 +196,8 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
         });
 
         attrs.$observe('disabled', function (value) {
+          if (value === 'false')
+            value = false;
           elm.select2('enable', !value);
         });
 
