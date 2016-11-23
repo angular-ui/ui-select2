@@ -101,7 +101,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                 };
                 var viewValue = controller.$viewValue;
                 if (angular.isString(viewValue)) {
-                  viewValue = viewValue.split(',');
+                  viewValue = viewValue.split(opts.separator);
                 }
                 elm.select2(
                   'data', convertToSelect2Model(viewValue));
