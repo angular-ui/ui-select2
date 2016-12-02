@@ -187,6 +187,7 @@ describe('uiSelect2', function () {
       expect(element.select2('val')).toBe('fourth');
     });
   });
+
   describe('with an <input> element', function () {
     describe('compiling this directive', function () {
       it('should throw an error if we have no model defined', function () {
@@ -408,4 +409,50 @@ describe('uiSelect2', function () {
     });
 
   });
+
+  describe('handle select2 events', function(){
+
+    beforeEach(function(){
+      scope.options['events'] = {
+        'change': function(e){
+          console.log('Things change...');
+        }, 
+        'open' : function(){
+          console.log('Select just opened');
+        }
+      };
+    });
+
+    afterEach(function(){
+      delete scope.options['events'];
+    });
+
+    var prefix = function(str){
+      var prefixed = str.match(/select2-/);
+      return prefixed || (str === 'change') ? str : "select2-".concat(str);
+    };
+
+    it('should be present', function(){
+      expect(scope.options.events).toBeDefined();
+    });
+
+    it('should add `select2-` to beginning of "open"', function(){
+      expect(prefix('open')).toEqual('select2-open');
+    });
+
+    it('should NOT add `select2-` to the beginning of a "change" event', function(){
+      expect(prefix('change')).toEqual('change');
+    });
+
+    it('should rename events name to meet `select2` event convention', function(){
+      angular.forEach(scope.options.events, function(val, key){
+        scope.options.events[prefix(key)] = val;
+        delete scope.options.events[key];
+      });
+      expect(scope.options.events['select2-open']).toBeDefined();
+      expect(scope.options.events['open']).toBeUndefined();
+    });
+    
+  });
+
 });

@@ -80,6 +80,23 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           opts.multiple = true;
         }
 
+        if(angular.isDefined(opts.events)){
+          // help with naming, because adding 'select2-' to every event should be optional.
+          var prefixer = function(str){
+            var prefixed = str.match(/select2-/);
+            return prefixed || (str === 'change') ? str : "select2-".concat(str);
+          };
+
+          // Link select2 callbacks from options
+          angular.forEach(opts.events, function(val, key){
+            key = prefixer(key);
+            elm.on(key, val);
+          });
+
+          delete opts.events;
+        }
+
+
         if (controller) {
           // Watch the model for programmatic changes
            scope.$watch(tAttrs.ngModel, function(current, old) {
