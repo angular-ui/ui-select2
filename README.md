@@ -52,7 +52,7 @@ If you use a `bower.json` file in your project, you can have Bower save ui-selec
 This will copy the ui-select2 files into your `bower_components` folder, along with its dependencies. Load the script files in your application:
 ```html
 <link rel="stylesheet" href="bower_components/select2/select2.css">
-<script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="bower_components/select2/select2.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-select2/src/select2.js"></script>
