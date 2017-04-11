@@ -90,6 +90,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               return;
             }
             controller.$render();
+            if (!isSelect) {
+                elm.trigger('change');
+            }
           }, true);
           controller.$render = function () {
             if (isSelect) {
