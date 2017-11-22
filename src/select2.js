@@ -148,7 +148,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
           }
 
           // Update valid and dirty statuses
-          controller.$parsers.push(function (value) {
+          controller.$viewChangeListeners.push(function () {
             var div = elm.prev();
             div
               .toggleClass('ng-invalid', !controller.$valid)
@@ -157,7 +157,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               .toggleClass('ng-valid-required', controller.$valid)
               .toggleClass('ng-dirty', controller.$dirty)
               .toggleClass('ng-pristine', controller.$pristine);
-            return value;
           });
 
           if (!isSelect) {
